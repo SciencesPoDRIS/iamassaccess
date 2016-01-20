@@ -35,8 +35,6 @@ metadata['Language'] = 'French'
 metadata['Usage'] = 'Attribution-Noncommercial-No Derivative Works 3.0'
 # metadata['Topics'] = ['France', 'Assemblée nationale', 'Elections législatives', 'Ve République']
 
-item = internetarchive.get_item('Newbucketohyeah')
-
-print item.exists
-
+# Upload a single file to an item. The item will be created if it does not exist.
+item = internetarchive.get_item('Lalilou')
 item.upload_file(files[0], headers=headers, metadata=metadata, access_key=conf["access_key"], secret_key=conf["secret_key"])
