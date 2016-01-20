@@ -4,9 +4,16 @@
 import internetarchive
 import sys
 import os
+import json
 
-access_key = '8wTtUBty6wNXtoQ8'
-secret_key = 'lYpcqCksqK2AdCpe'
+conf_file = os.path.join('conf', 'conf.json')
+
+# Load conf file
+if os.path.exists(conf_file) :
+	with open(conf_file) as f :
+		conf = json.load(f)
+else :
+	print 'No conf file'
 
 files = []
 for root, dirs, docs in os.walk(sys.argv[1]):
