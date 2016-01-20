@@ -11,7 +11,7 @@ secret_key = 'lYpcqCksqK2AdCpe'
 files = []
 for root, dirs, docs in os.walk(sys.argv[1]):
 	for doc in docs:
-		files.append(root + doc)
+		files.append(os.path.join(root, doc))
 
 headers = dict()
 headers['x-archive-auto-make-bucket'] = 1
