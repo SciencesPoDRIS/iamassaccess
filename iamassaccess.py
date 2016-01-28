@@ -7,6 +7,7 @@ import internetarchive, json, logging, os, sys
 conf_file = os.path.join('conf', 'conf.json')
 log_folder = 'log'
 log_level = logging.DEBUG
+item_id = 'new_al_item'
 
 # Check that log folder exists, else create it
 if not os.path.exists(log_folder) :
@@ -21,12 +22,11 @@ if os.path.exists(conf_file) :
 	with open(conf_file) as f :
 		conf = json.load(f)
 else :
-	print 'No conf file'
+	logging.error('No conf file')
 	sys.exit(0)
 
 # Walk the dir containing the files to upload
-if len(sys.argv) < 2:
-	print 'No folder specified'
+if len(sys.argv) < 2 :
 	logging.error('No folder specified')
 	sys.exit(0)
 
@@ -40,21 +40,25 @@ for dirpath, dirnames, filenames in os.walk(sys.argv[1]) :
 # RTFM : http://archive.org/help/abouts3.txt
 headers = dict()
 
-# Metadata dictionary : all keys must be lowercase
-metadata = dict()
-metadata['lalilou'] = '02'
-metadata['newmetadata'] = 'Nouvelle donnee'
-metadata['year'] = "2045"
+# Load metadata as json file
+# ToDo : all the keys have to be in lowercase
+if os.path.exists(os.path.join(sys.argv[1], 'metadata.json')) :
+	with open(os.path.join(sys.argv[1], 'metadata.json')) as metadata_file :
+		metadata = json.load(metadata_file)
+# If no metadata file for this item
+else :
+	metadata = dict()
+	logging.info('No metadata file for item : ' + item_id)
 
 # Get the item with unique identifier. The item will be created if it does not exist.
-item = internetarchive.get_item('EL065_L_1973_03_006_04_2_PF')
+item = internetarchive.get_item(item_id)
 
 # Upload multiple files to an item.
 item.upload(files, metadata=metadata, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-logging.info('Files uploaded for item : ' + 'EL065_L_1973_03_006_04_2_PF')
+logging.info('Files uploaded for item : ' + item_id)
 
 # Modify metadata : modify an existing one or create new metadata
 item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
-logging.info('Metadata modified for item : ' + 'EL065_L_1973_03_006_04_2_PF')
+logging.info('Metadata modified for item : ' + item_id)
 
 logging.info('End')
