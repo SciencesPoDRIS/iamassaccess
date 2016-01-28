@@ -6,16 +6,21 @@ import sys
 import os
 import json
 
+# Load conf file
 conf_file = os.path.join('conf', 'conf.json')
 
-# Load conf file
 if os.path.exists(conf_file) :
 	with open(conf_file) as f :
 		conf = json.load(f)
 else :
 	print 'No conf file'
+	sys.exit(0)
 
 # Walk the dir containing the files to upload
+if len(sys.argv) < 2:
+	print 'No folder specified'
+	sys.exit(0)
+	
 files = []
 for root, dirs, docs in os.walk(sys.argv[1]):
 	for doc in docs:
