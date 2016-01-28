@@ -1,10 +1,7 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
 
-import internetarchive
-import sys
-import os
-import json
+import internetarchive, json, os, sys
 
 # Load conf file
 conf_file = os.path.join('conf', 'conf.json')
