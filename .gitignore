@@ -2,3 +2,8 @@
 # Conf file
 #
 conf/conf.json
+
+#
+# Log folder
+#
+log
