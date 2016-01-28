@@ -33,17 +33,16 @@ if len(sys.argv) < 2:
 files = []
 for dirpath, dirnames, filenames in os.walk(sys.argv[1]) :
 	for filename in filenames :
-		files.append(os.path.join(root, filename))
+		files.append(os.path.join(dirpath, filename))
 		logging.info('File append : ' + filename)
 
-# Headers : needs to be investigated and handled
+# Headers : add additional HTTP headers to the request if needed
+# RTFM : http://archive.org/help/abouts3.txt
 headers = dict()
-headers['x-archive-auto-make-bucket'] = 1
-headers['x-archive-size-hint'] = 1397759
 
 # Metadata dictionary : all keys must be lowercase
 metadata = dict()
-metadata['blagounette'] = 'kakakaka'
+metadata['lalilou'] = '02'
 metadata['newmetadata'] = 'Nouvelle donnee'
 metadata['year'] = "2045"
 
