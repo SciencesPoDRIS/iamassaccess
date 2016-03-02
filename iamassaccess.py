@@ -36,8 +36,7 @@ parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(
 parser.add_argument('--files', dest='files', help="folder containing the files to be uploaded")
 args = parser.parse_args()
 
-print args
-
+# Check arguments and validity of mode + files provided
 if args.mode == 'create' and args.files is None:
 	logging.error('Mode chosen is CREATE and no files are provided to upload')
 	sys.exit(0)
@@ -52,6 +51,7 @@ elif args.mode == 'update' and args.metadata is None:
 	logging.error('Mode chosen is UPDATE and no metadata file is provided')
 	sys.exit(0)
 
+# Load conf file
 if os.path.exists(conf_file) :
 	with open(conf_file) as f :
 		conf = json.load(f)
