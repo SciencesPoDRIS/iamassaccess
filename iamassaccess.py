@@ -1,7 +1,12 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
 
-import internetarchive, json, logging, os, sys
+import internetarchive
+import json
+import logging
+import os
+import sys
+import argparse
 
 # Load conf file
 conf_file = os.path.join('conf', 'conf.json')
@@ -18,11 +23,40 @@ log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
 logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
 logging.info('Start')
 
+# Parser test of existence of file of myenglishisbad
+def is_valid_file(parser, arg):
+    if not os.path.exists(arg):
+        parser.error("The file %s does not exist" % arg)
+    else:
+        return open(arg, 'r')
+
+parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org or update their metadata!')
+parser.add_argument('mode', action='store', choices=['create', 'update'], help="mode of operation : upload new items or update existing items' metadata")
+parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(parser, x), help="the metada file to be used to create or update the file")
+parser.add_argument('--files', dest='files', help="folder containing the files to be uploaded")
+args = parser.parse_args()
+
+print args
+
+if args.mode == 'create' and args.files is None:
+	logging.error('Mode chosen is CREATE and no files are provided to upload')
+	sys.exit(0)
+elif args.mode == 'create' and args.metadata is None:
+	no_metadata = raw_input('Mode chosen is CREATE and no metadata provided. Do you want to upload your files without metadata? [Y/n]')
+	if no_metadata != 'Y' or no_metadata != 'yes' or no_metadata != 'Yes':
+		logging.error('No metadata file provided for the specified files.')
+		sys.exit(0)
+	else:
+		logging.error('No metadata file provided. Uploading files without metadata')
+elif args.mode == 'update' and args.metadata is None:
+	logging.error('Mode chosen is UPDATE and no metadata file is provided')
+	sys.exit(0)
+
 if os.path.exists(conf_file) :
 	with open(conf_file) as f :
 		conf = json.load(f)
 else :
-	logging.error('No conf file')
+	logging.error('No conf file provided')
 	sys.exit(0)
 
 # Walk the dir containing the files to upload
