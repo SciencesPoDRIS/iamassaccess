@@ -136,15 +136,6 @@ log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
 logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
 logging.info('Start')
 
-# Load conf file
-if os.path.exists(conf_file) :
-	with open(conf_file) as f :
-		conf = json.load(f)
-	logging.info('Conf file loaded')
-else :
-	logging.error('No conf file provided')
-	sys.exit(0)
-
 parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org or update their metadata!')
 parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
 parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada file to be used to create or update the file")
@@ -156,7 +147,19 @@ if args.mode == 'create' and args.files is None:
 	logging.error('Mode chosen is CREATE and no files are provided to upload')
 	sys.exit(0)
 elif args.mode == 'update' and args.metadata is None:
-	logging.error('Mode chosen is UPDATE and no metadata file is provided')
+	logging.error('Mode chosen is UPDATE and no metadata file is provided to update files')
+	sys.exit(0)
+elif args.mode == 'delete' and args.metadata is None:
+	logging.error('Mode chosen is DELETE and no metadata file is provided to delete files')
+	sys.exit(0)
+
+# Load conf file
+if os.path.exists(conf_file) :
+	with open(conf_file) as f :
+		conf = json.load(f)
+	logging.info('Conf file loaded')
+else :
+	logging.error('No conf file provided')
 	sys.exit(0)
 
 walk_files_upload(args.files)
