@@ -24,14 +24,65 @@ def is_valid_folder(arg):
     else:
         return arg
 
-# # Walk a folder and returns the list of the names of the files it contains
-# def walk_files_folder(folder):
-# 	filenames = []
-# 	for root, dirs, files in os.walk(folder):
-# 		for filename in files :
-# 			filenames.append(os.path.join(root, filename))
-# 			logging.info('File append : ' + filename)
-# 	return filenames
+# Logs folder structure problem/error and print out correct folder structure guidelines
+def print_folder_structure_problem():
+	logging.error("Folder of files to upload does not comply with file structure")
+	print """
+	Folder of files to upload does not comply with following file structure
+	- folder
+	  - file_1
+	    - doc_to_upload
+	    - doc_to_upload
+	    - doc_to_upload
+	  - file_2
+	    - doc_to_upload
+	    - doc_to_upload
+	    - doc_to_upload
+	  - metadata.csv
+	"""
+	sys.exit(0)
+
+# Check metadata file and folder structure for correspondance (enough metadata for each file and vice-versa)
+# def metadata_folder_check():
+
+# Walk a folder and returns the list of the names of the files it contains
+def walk_files_folder(folder):
+	filenames = []
+	for root, dirs, files in os.walk(folder):
+		for filename in files :
+			filenames.append(os.path.join(root, filename))
+			logging.info('File append : ' + filename)
+	return filenames
+
+# Verify the structure of a folder of files to upload (and presence of metadata file)
+# Return the dictionary of metadata and the dictionary of files
+def walk_files_upload(folder):
+	items = os.listdir(folder)
+	
+	if "metadata.csv" in items:
+		metadata = load_csv_metadata_file('metadata.csv')
+	else:
+		no_metadata = raw_input('Mode chosen is CREATE and no metadata provided.\nDo you want to upload your files without metadata?\n[Y/n]').lower()
+		if no_metadata != 'y' and no_metadata != 'yes' and no_metadata != 'Yes':
+			logging.error('User chose to exit because no metadata file provided for the specified files')
+			sys.exit(0)
+		else:
+			logging.error('User chose to upload files without metadata')
+	
+	files_dic = {}
+	for item in items:
+		if item != ".DS_Store" and item != "metadata.csv":
+			if not os.path.isdir(os.path.join(folder, item)):
+				folder_structure_problem()
+			else:
+				files = os.listdir(os.path.join(folder, item))
+				for file in files:
+					if not os.path.isfile(os.path.join(folder, item, file)):
+						folder_structure_problem()
+					else:
+						files_dic[item] = files
+	# TODO : check if there's metadata for each file in the folder, vice-versa
+	return metadata, files_dic
 
 # Load a csv file (used for the metadata)
 def load_csv_metadata_file(metadata):
@@ -52,16 +103,17 @@ def load_csv_metadata_file(metadata):
 		logging.info("Specified metadata file doesn't exist or impossible to load")
 	return metadata
 
-# # Load a json file to a dictionary (used for the metadata)
-# def load_json_metadata_file(metadata):
-# 	if os.path.exists(os.path.join(metadata)):
-# 		with open(metadata) as metadata_file :
-# 			metadata = json.load(metadata_file)
-# 	else :
-# 		metadata = None
-# 		logging.info("Specified metadata file doesn't exist or impossible to load")
-# 	return metadata
+# Load a json file to a dictionary (used for the metadata)
+def load_json_metadata_file(metadata):
+	if os.path.exists(os.path.join(metadata)):
+		with open(metadata) as metadata_file :
+			metadata = json.load(metadata_file)
+	else :
+		metadata = None
+		logging.info("Specified metadata file doesn't exist or impossible to load")
+	return metadata
 
+# TODO
 def createItems(folder, metadata_file=None):
 	files = walk_files_folder(folder)
 	if metadata_file != None:
@@ -113,44 +165,6 @@ elif args.mode == 'update' and args.metadata is None:
 	logging.error('Mode chosen is UPDATE and no metadata file is provided')
 	sys.exit(0)
 
-
-def walk_files_upload(folder):
-	items = os.listdir(folder)
-	
-	if "metadata.csv" in items:
-		metadata = load_csv_metadata_file('metadata.csv')
-	else:
-		no_metadata = raw_input('Mode chosen is CREATE and no metadata provided.\nDo you want to upload your files without metadata?\n[Y/n]')
-		if no_metadata != 'Y' and no_metadata != 'yes' and no_metadata != 'Yes':
-			logging.error('User chose to exit because no metadata file provided for the specified files')
-			sys.exit(0)
-		else:
-			logging.error('User chose to upload files without metadata')
-	
-	files_dic = {}
-	for item in items:
-		if item != ".DS_Store" and item != "metadata.csv":
-			if not os.path.isdir(os.path.join(folder, item)):
-				logging.error("Folder of files to upload does not comply with file structure")
-				print """
-Folder of files to upload does not comply with following file structure
-- folder
-  - file_1
-    - doc_to_upload
-    - doc_to_upload
-    - doc_to_upload
-  - file_2
-    - doc_to_upload
-    - doc_to_upload
-    - doc_to_upload
-  - metadata.csv
-"""
-				sys.exit(0)
-			files = os.listdir(os.path.join(folder, item))
-	print files
-	return metadata, files
-
-walk_files_upload(args.files)
 
 # def updateItems(metadata_file):
 # 	metadata = load_metadata_file(metadata_file)
