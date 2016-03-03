@@ -43,7 +43,15 @@ def print_folder_structure_problem():
 	sys.exit(0)
 
 # Check metadata file and folder structure for correspondance (enough metadata for each file and vice-versa)
-# def metadata_folder_check():
+def metadata_folder_consistency(metadata_dic, files_dic):
+	for file in files_dic:
+	 	if file not in metadata_dic.keys():
+	 		logging.error("Missing metadatas for file %s" % file)
+	 		sys.exit(0)
+	for metadata in metadata_dic:
+		if metadata not in files_dic.keys():
+			logging.error("Metadata in the file metadata.csv isn't attributed to a file")
+			sys.exit(0)
 
 # Walk a folder and returns the list of the names of the files it contains
 def walk_files_folder(folder):
@@ -58,39 +66,38 @@ def walk_files_folder(folder):
 # Return the dictionary of metadata and the dictionary of files
 def walk_files_upload(folder):
 	items = os.listdir(folder)
-	
+
 	if "metadata.csv" in items:
-		metadata = load_csv_metadata_file(os.path.join(folder, 'metadata.csv'))
+		metadata_dic = load_csv_metadata_file(os.path.join(folder, 'metadata.csv'))
 	else:
 		logging.error('No metadata file provided')
 		sys.exit(0)
-	
+
 	files_dic = {}
 	for item in items:
-		if item != ".DS_Store" and item != "metadata.csv":
+		if item[0] != '.' and item != "metadata.csv":
 			if not os.path.isdir(os.path.join(folder, item)):
-				folder_structure_problem()
+				print_folder_structure_problem()
 			else:
 				files = os.listdir(os.path.join(folder, item))
 				for file in files:
 					if not os.path.isfile(os.path.join(folder, item, file)):
-						folder_structure_problem()
+						print_folder_structure_problem()
 					else:
 						files_dic[item] = files
-	
-	# TODO : check if there's metadata for each file in the folder, vice-versa
-	return metadata, files_dic
+
+	metadata_folder_consistency(metadata_dic, files_dic)
+	return metadata_dic, files_dic
 
 # Load a csv file (used for the metadata)
 def load_csv_metadata_file(metadata):
-	print metadata
 	if os.path.exists(os.path.join(metadata)):
 		metadata_dict = defaultdict(lambda : defaultdict())
 		with open(metadata) as metadata_file :
 			metadata_csv = csv.reader(metadata_file)
 			headers = metadata_csv.next()
 			for line in metadata_csv:
-				filename = line[0]
+				filename = line[0].lower()
 				for attribute in range(1, len(line)):
 					key = "attribute" + str(attribute)
 					value = line[attribute]
@@ -121,12 +128,10 @@ def createItems(folder, metadata_file=None):
 def updateItems(metadata_file):
 	metadata = load_csv_metadata_file(metadata_file)
 
-# Load conf file
-conf_file = os.path.join('conf', 'conf.json')
+# Logging initiation routine
 log_folder = 'log'
 log_level = logging.DEBUG
 item_id = 'new_al_item'
-
 # Check that log folder exists, else create it
 if not os.path.exists(log_folder) :
 	os.makedirs(log_folder)
@@ -136,6 +141,7 @@ log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
 logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
 logging.info('Start')
 
+# Argument parser configuration + parsing of args
 parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org or update their metadata!')
 parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
 parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada file to be used to create or update the file")
@@ -154,6 +160,7 @@ elif args.mode == 'delete' and args.metadata is None:
 	sys.exit(0)
 
 # Load conf file
+conf_file = os.path.join('conf', 'conf.json')
 if os.path.exists(conf_file) :
 	with open(conf_file) as f :
 		conf = json.load(f)
@@ -162,8 +169,11 @@ else :
 	logging.error('No conf file provided')
 	sys.exit(0)
 
-walk_files_upload(args.files)
+metadatata, filesles = walk_files_upload(args.files)
 
+print metadatata, filesles
+
+# print metadatata, filesles
 # # Headers : add additional HTTP headers to the request if needed
 # # RTFM : http://archive.org/help/abouts3.txt
 # headers = dict()
