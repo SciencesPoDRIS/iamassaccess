@@ -80,11 +80,14 @@ def walk_files_upload(folder):
 				print_folder_structure_problem()
 			else:
 				files = os.listdir(os.path.join(folder, item))
+				fullpathfiles = []
 				for file in files:
 					if not os.path.isfile(os.path.join(folder, item, file)):
 						print_folder_structure_problem()
-					else:
-						files_dic[item] = files
+					elif file[0] != '.':
+						fullpathfile = os.path.join(folder, item, file)
+						fullpathfiles.append(fullpathfile)
+				files_dic[item] = fullpathfiles
 
 	metadata_folder_consistency(metadata_dic, files_dic)
 	return metadata_dic, files_dic
@@ -118,11 +121,16 @@ def load_json_metadata_file(metadata):
 		logging.info("Specified metadata file doesn't exist or impossible to load")
 	return metadata
 
-# TODO
-def createItems(folder, metadata_file=None):
-	files = walk_files_folder(folder)
-	if metadata_file != None:
-		metadata = load_metadata_file(metadata_file)
+# Uploads files in folders in new items or in existing items if they exists
+def createItems(folder, headers):
+	metadata, files = walk_files_upload(folder)
+	for folder in files:
+		item = internetarchive.get_item(folder)
+		files_for_item = files[folder]
+		metadata_for_item = metadata[folder]
+
+		item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
+		logging.info('Files uploaded for item : ' + folder)
 
 # TODO
 def updateItems(metadata_file):
@@ -142,9 +150,9 @@ logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s 
 logging.info('Start')
 
 # Argument parser configuration + parsing of args
-parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org or update their metadata!')
+parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
 parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
-parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada file to be used to create or update the file")
+parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada csv file : headers + 1 row/file")
 parser.add_argument('--files', dest='files', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
 args = parser.parse_args()
 
@@ -169,21 +177,12 @@ else :
 	logging.error('No conf file provided')
 	sys.exit(0)
 
-metadatata, filesles = walk_files_upload(args.files)
+# Headers : add additional HTTP headers to the request if needed
+# RTFM : http://archive.org/help/abouts3.txt
+headers = dict()
 
-print metadatata, filesles
-
-# print metadatata, filesles
-# # Headers : add additional HTTP headers to the request if needed
-# # RTFM : http://archive.org/help/abouts3.txt
-# headers = dict()
-
-# # Get the item with unique identifier. The item will be created if it does not exist.
-# item = internetarchive.get_item(item_id)
-
-# # Upload multiple files to an item.
-# item.upload(files, metadata=metadata, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-# logging.info('Files uploaded for item : ' + item_id)
+if args.mode == 'create':
+	createItems(args.files, headers)
 
 # # Modify metadata : modify an existing one or create new metadata
 # item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
