@@ -98,12 +98,13 @@ def load_csv_metadata_file(metadata):
 		metadata_dict = defaultdict(lambda : defaultdict())
 		with open(metadata) as metadata_file :
 			metadata_csv = csv.reader(metadata_file)
-			headers = metadata_csv.next()
+			headers = metadata_csv.next()[1:] # list of attributes names minus file identifiers in the first columns
 			for line in metadata_csv:
 				filename = line[0].lower()
-				for attribute in range(1, len(line)):
-					key = "attribute" + str(attribute)
-					value = line[attribute]
+				attributes = line[1:]
+				for i in range(len(attributes)):
+					key = headers[i]
+					value = attributes[i]
 					metadata_dict[filename][key] = value.lower()
 		metadata = metadata_dict
 	else :
