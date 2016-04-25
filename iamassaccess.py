@@ -133,11 +133,12 @@ def createItems(folder, headers):
 		logging.info('Files uploaded for item : ' + folder)
 
 # Modify metadata : modify an existing one or create new metadata
-# def updateItems(metadata_file):
-# 	metadata = load_csv_metadata_file(metadata_file)
-# 	print metadata
-# 	# item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
-# 	logging.info('Metadata modified for item : ' + item_id)
+def updateItems(metadata_file):
+	metadata = load_csv_metadata_file(metadata_file)
+	for file in metadata:
+		item = internetarchive.get_item(file)
+		item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
+		logging.info('Metadata modified for item : ' + str(item.identifier))
 
 # Logging initiation routine
 log_folder = 'log'
@@ -187,7 +188,7 @@ headers = dict()
 
 if args.mode == 'create':
 	createItems(args.folder, headers)
-# elif args.mode == 'update':
-# 	updateItems(args.metadata)
+elif args.mode == 'update':
+	updateItems(args.metadata)
 
 logging.info('End')
