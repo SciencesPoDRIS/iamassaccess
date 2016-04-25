@@ -1,73 +1,192 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
 
+import internetarchive
+import json
 import csv
-import internetarchive, json, logging, os, sys
+import logging
+import os
+import sys
+import argparse
+from collections import defaultdict
 
-# Load conf file
-conf_file = os.path.join('conf', 'conf.json')
+# Check if file argument is valid and returns it opened
+def is_valid_file(arg):
+    if not os.path.exists(arg):
+        logging.error("The file %s does not exist" % arg)
+    else:
+        return arg
+
+# Check if folder argument is valid and returns its path
+def is_valid_folder(arg):
+    if not os.path.isdir(arg):
+        logging.error("The folder %s does not exist" % arg)
+    else:
+        return arg
+
+# Logs folder structure problem/error and print out correct folder structure guidelines
+def print_folder_structure_problem():
+	logging.error("Folder of files to upload does not comply with file structure")
+	print """
+	Folder of files to upload does not comply with following file structure
+	- folder
+	  - file_1
+	    - doc_to_upload
+	    - doc_to_upload
+	    - doc_to_upload
+	  - file_2
+	    - doc_to_upload
+	    - doc_to_upload
+	    - doc_to_upload
+	  - metadata.csv
+	"""
+	sys.exit(0)
+
+# Check metadata file and folder structure for correspondance (enough metadata for each file and vice-versa)
+def metadata_folder_consistency(metadata_dic, files_dic):
+	for file in files_dic:
+	 	if file not in metadata_dic.keys():
+	 		logging.error("Missing metadatas for file %s" % file)
+	 		sys.exit(0)
+	for metadata in metadata_dic:
+		if metadata not in files_dic.keys():
+			logging.error("Metadata in the file metadata.csv isn't attributed to a file")
+			sys.exit(0)
+
+# Walk a folder and returns the list of the names of the files it contains
+def walk_files_folder(folder):
+	filenames = []
+	for root, dirs, files in os.walk(folder):
+		for filename in files :
+			filenames.append(os.path.join(root, filename))
+			logging.info('File append : ' + filename)
+	return filenames
+
+# Verify the structure of a folder of files to upload (and presence of metadata file)
+# Return the dictionary of metadata and the dictionary of files
+def walk_files_upload(folder):
+	items = os.listdir(folder)
+
+	if "metadata.csv" in items:
+		metadata_dic = load_csv_metadata_file(os.path.join(folder, 'metadata.csv'))
+	else:
+		logging.error('No metadata file provided')
+		sys.exit(0)
+
+	files_dic = {}
+	for item in items:
+		if item[0] != '.' and item != "metadata.csv":
+			if not os.path.isdir(os.path.join(folder, item)):
+				print_folder_structure_problem()
+			else:
+				files = os.listdir(os.path.join(folder, item))
+				fullpathfiles = []
+				for file in files:
+					if not os.path.isfile(os.path.join(folder, item, file)):
+						print_folder_structure_problem()
+					elif file[0] != '.':
+						fullpathfile = os.path.join(folder, item, file)
+						fullpathfiles.append(fullpathfile)
+				files_dic[item] = fullpathfiles
+
+	metadata_folder_consistency(metadata_dic, files_dic)
+	return metadata_dic, files_dic
+
+# Load a csv file (used for the metadata)
+def load_csv_metadata_file(metadata):
+	if os.path.exists(os.path.join(metadata)):
+		metadata_dict = defaultdict(lambda : defaultdict())
+		with open(metadata) as metadata_file :
+			metadata_csv = csv.reader(metadata_file)
+			headers = metadata_csv.next()
+			for line in metadata_csv:
+				filename = line[0].lower()
+				for attribute in range(1, len(line)):
+					key = "attribute" + str(attribute)
+					value = line[attribute]
+					metadata_dict[filename][key] = value.lower()
+		metadata = metadata_dict
+	else :
+		metadata = None
+		logging.info("Specified metadata file doesn't exist or impossible to load")
+	return metadata
+
+# Load a json file to a dictionary (used for the metadata)
+def load_json_metadata_file(metadata):
+	if os.path.exists(os.path.join(metadata)):
+		with open(metadata) as metadata_file :
+			metadata = json.load(metadata_file)
+	else :
+		metadata = None
+		logging.info("Specified metadata file doesn't exist or impossible to load")
+	return metadata
+
+# Uploads files in folders in new items or in existing items if they exists
+def createItems(folder, headers):
+	metadata, files = walk_files_upload(folder)
+	for folder in files:
+		item = internetarchive.get_item(folder)
+		files_for_item = files[folder]
+		metadata_for_item = metadata[folder]
+
+		item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
+		logging.info('Files uploaded for item : ' + folder)
+
+# TODO
+def updateItems(metadata_file):
+	metadata = load_csv_metadata_file(metadata_file)
+
+# Logging initiation routine
 log_folder = 'log'
 log_level = logging.DEBUG
 item_id = 'new_al_item'
 
-#
-# Main
-#
-if __name__ == '__main__':
-	# Check that log folder exists, else create it
-	if not os.path.exists(log_folder) :
-		os.makedirs(log_folder)
-	# Create log file path
-	log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
-	# Init logs
-	logging.basicConfig(filename=log_file, filemode='a+', format='%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=log_level)
-	logging.info('Start')
+# Check that log folder exists, else create it
+if not os.path.exists(log_folder) :
+	os.makedirs(log_folder)
+# Create log file path
+log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
+# Init logs
+logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
+logging.info('Start')
 
-	if os.path.exists(conf_file) :
-		with open(conf_file) as f :
-			conf = json.load(f)
-	else :
-		logging.error('No conf file')
-		sys.exit(0)
+# Argument parser configuration + parsing of args
+parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
+parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
+parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada csv file : headers + 1 row/file")
+parser.add_argument('--files', dest='files', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
+args = parser.parse_args()
 
-	if len(sys.argv) < 3 :
-		logging.error('No folder specified')
-		sys.exit(0)
+# Check arguments and validity of mode + files provided
+if args.mode == 'create' and args.files is None:
+	logging.error('Mode chosen is CREATE and no files are provided to upload')
+	sys.exit(0)
+elif args.mode == 'update' and args.metadata is None:
+	logging.error('Mode chosen is UPDATE and no metadata file is provided to update files')
+	sys.exit(0)
+elif args.mode == 'delete' and args.metadata is None:
+	logging.error('Mode chosen is DELETE and no metadata file is provided to delete files')
+	sys.exit(0)
 
-	# Walk the dir containing the files to upload
-	files = []
-	for dirpath, dirnames, filenames in os.walk(sys.argv[1]) :
-		for filename in filenames :
-			files.append(os.path.join(dirpath, filename))
-			logging.info('File append : ' + filename)
+# Load conf file
+conf_file = os.path.join('conf', 'conf.json')
+if os.path.exists(conf_file) :
+	with open(conf_file) as f :
+		conf = json.load(f)
+	logging.info('Conf file loaded')
+else :
+	logging.error('No conf file provided')
+	sys.exit(0)
 
-	# Headers : add additional HTTP headers to the request if needed
-	# RTFM : http://archive.org/help/abouts3.txt
-	headers = dict()
+# Headers : add additional HTTP headers to the request if needed
+# RTFM : http://archive.org/help/abouts3.txt
+headers = dict()
 
-	# Load metadata from CSV file
-	# ToDo : all the keys have to be in lowercase
-	metadata = dict()
-	if os.path.exists('test/metadata.csv') :
-		with open('test/metadata.csv', 'rb') as csvfile :
-			spamreader = csv.reader(csvfile, delimiter=',', quotechar='"', skipinitialspace=True)
-			keys = spamreader.next()
-			for values in spamreader :
-				metadata[values[0]] = dict()
-				for x, y in enumerate(values[1:]) :
-					metadata[values[0]][keys[x + 1].lower()] = y
-	else :
-		logging.info('No metadata file for item : ' + item_id)
+if args.mode == 'create':
+	createItems(args.files, headers)
 
-	# Get the item with unique identifier. The item will be created if it does not exist.
-	item = internetarchive.get_item(item_id)
+# # Modify metadata : modify an existing one or create new metadata
+# item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
+# logging.info('Metadata modified for item : ' + item_id)
 
-	# Upload multiple files to an item.
-	# item.upload(files, metadata=metadata, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-	logging.info('Files uploaded for item : ' + item_id)
-
-	# Modify metadata : modify an existing one or create new metadata
-	# item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
-	logging.info('Metadata modified for item : ' + item_id)
-
-	logging.info('End')
+logging.info('End')
