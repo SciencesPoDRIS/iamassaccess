@@ -132,7 +132,7 @@ def createItems(folder, headers):
 		item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
 		logging.info('Files uploaded for item : ' + folder)
 
-# Modify metadata : modify an existing one or create new metadata
+# Modify metadata : modify an item's metadata or create new one
 def updateItems(metadata_file):
 	metadata = load_csv_metadata_file(metadata_file)
 	for file in metadata:
