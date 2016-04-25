@@ -126,11 +126,15 @@ def createItems(folder, headers):
 	metadata, files = walk_files_upload(folder)
 	for folder in files:
 		item = internetarchive.get_item(folder)
-		files_for_item = files[folder]
-		metadata_for_item = metadata[folder]
-
-		item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-		logging.info('Files uploaded for item : ' + folder)
+		# Check if item already exists
+		if item.exists :
+			logging.error('Item "' + folder + '" already exists. Please use the "UPDATE" mode to update its metadata.')
+		# If item does not already exist, upload it
+		else :
+			files_for_item = files[folder]
+			metadata_for_item = metadata[folder]
+			item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
+			logging.info('Files uploaded for item : ' + folder)
 
 # TODO
 def updateItems(metadata_file):
