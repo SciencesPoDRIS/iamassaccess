@@ -132,9 +132,12 @@ def createItems(folder, headers):
 		item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
 		logging.info('Files uploaded for item : ' + folder)
 
-# TODO
-def updateItems(metadata_file):
-	metadata = load_csv_metadata_file(metadata_file)
+# Modify metadata : modify an existing one or create new metadata
+# def updateItems(metadata_file):
+# 	metadata = load_csv_metadata_file(metadata_file)
+# 	print metadata
+# 	# item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
+# 	logging.info('Metadata modified for item : ' + item_id)
 
 # Logging initiation routine
 log_folder = 'log'
@@ -154,11 +157,11 @@ logging.info('Start')
 parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
 parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
 parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada csv file : headers + 1 row/file")
-parser.add_argument('--files', dest='files', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
+parser.add_argument('--folder', dest='folder', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
 args = parser.parse_args()
 
 # Check arguments and validity of mode + files provided
-if args.mode == 'create' and args.files is None:
+if args.mode == 'create' and args.folder is None:
 	logging.error('Mode chosen is CREATE and no files are provided to upload')
 	sys.exit(0)
 elif args.mode == 'update' and args.metadata is None:
@@ -183,10 +186,8 @@ else :
 headers = dict()
 
 if args.mode == 'create':
-	createItems(args.files, headers)
-
-# # Modify metadata : modify an existing one or create new metadata
-# item.modify_metadata(metadata, access_key=conf['access_key'], secret_key=conf['secret_key'])
-# logging.info('Metadata modified for item : ' + item_id)
+	createItems(args.folder, headers)
+# elif args.mode == 'update':
+# 	updateItems(args.metadata)
 
 logging.info('End')
