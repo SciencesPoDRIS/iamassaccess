@@ -141,8 +141,13 @@ def updateItems(metadata_file):
 	metadata = load_csv_metadata_file(metadata_file)
 	for file in metadata:
 		item = internetarchive.get_item(file)
-		item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
-		logging.info('Metadata modified for item : ' + str(item.identifier))
+		# Check if item already exists
+		if not item.exists :
+			logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
+		# If item does not already exist, upload it
+		else:
+			item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
+			logging.info('Metadata modified for item : ' + str(item.identifier))
 
 # Logging initiation routine
 log_folder = 'log'
