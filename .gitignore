@@ -7,3 +7,8 @@ conf/conf.json
 # Log folder
 #
 log
+
+#
+# DS_Store
+#
+.DS_Store
