@@ -98,12 +98,13 @@ def load_csv_metadata_file(metadata):
 		metadata_dict = defaultdict(lambda : defaultdict())
 		with open(metadata) as metadata_file :
 			metadata_csv = csv.reader(metadata_file)
-			headers = metadata_csv.next()
+			headers = metadata_csv.next()[1:] # list of attributes names minus file identifiers in the first columns
 			for line in metadata_csv:
 				filename = line[0].lower()
-				for attribute in range(1, len(line)):
-					key = "attribute" + str(attribute)
-					value = line[attribute]
+				attributes = line[1:]
+				for i in range(len(attributes)):
+					key = headers[i]
+					value = attributes[i]
 					metadata_dict[filename][key] = value.lower()
 		metadata = metadata_dict
 	else :
@@ -141,8 +142,13 @@ def updateItems(metadata_file):
 	metadata = load_csv_metadata_file(metadata_file)
 	for file in metadata:
 		item = internetarchive.get_item(file)
-		item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
-		logging.info('Metadata modified for item : ' + str(item.identifier))
+		# Check if item already exists
+		if not item.exists :
+			logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
+		# If item does not already exist, upload it
+		else:
+			item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
+			logging.info('Metadata modified for item : ' + str(item.identifier))
 
 # 
 def deleteItems(metadata_file):

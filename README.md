@@ -12,3 +12,5 @@ http://archive.org/account/s3.php
 # docs
 https://blog.archive.org/2013/07/04/metadata-api/
 
+# trivia
+- can't name your items "idX" where 'X' is in an integer
