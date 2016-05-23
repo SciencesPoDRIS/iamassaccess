@@ -153,15 +153,18 @@ def updateItems(metadata_file):
 # 
 def deleteItems(metadata_file):
 	metadata = load_csv_metadata_file(metadata_file)
-	for file in metadata:
-		item = internetarchive.get_item(file)
+	for item_name in metadata:
+		item = internetarchive.get_item(item_name)
 		# Check if item already exists
 		if item.exists :
-			# Delete item
-			internetarchive.delete(item.identifier)
-			logging.info('All files of the item "' + file + '" are deleted.')
+			# Gets files in the item
+			files = item.get_files(glob_pattern='*')
+			# Deletes them one by one
+			for file in files:
+				file.delete(access_key=conf['access_key'], secret_key=conf['secret_key'])
+			logging.info('All files of the item "' + item_name + '" are deleted.')
 		else :
-			logging.error('Item "' + folder + '" does not exist. Can\'t delete an unexisting item.')
+			logging.error('Item "' + item_name + '" does not exist. Can\'t delete an item that doesn\'t exist.')
 
 # Logging initiation routine
 log_folder = 'log'
