@@ -104,7 +104,7 @@ def load_csv_metadata_file(metadata):
 				metadata_dict[filename] = dict()
 				attributes = line[1:]
 				for i in range(len(attributes)):
-					key = headers[i]
+					key = headers[i].lower()
 					value = attributes[i]
 					metadata_dict[filename][key] = value.lower()
 		metadata = metadata_dict
