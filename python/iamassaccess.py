@@ -95,12 +95,13 @@ def walk_files_upload(folder):
 # Load a csv file (used for the metadata)
 def load_csv_metadata_file(metadata):
 	if os.path.exists(os.path.join(metadata)):
-		metadata_dict = defaultdict(lambda : defaultdict())
+		metadata_dict = dict()
 		with open(metadata) as metadata_file :
 			metadata_csv = csv.reader(metadata_file)
 			headers = metadata_csv.next()[1:] # list of attributes names minus file identifiers in the first columns
 			for line in metadata_csv:
 				filename = line[0].lower()
+				metadata_dict[filename] = dict()
 				attributes = line[1:]
 				for i in range(len(attributes)):
 					key = headers[i]
