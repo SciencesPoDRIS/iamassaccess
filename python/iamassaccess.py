@@ -105,7 +105,7 @@ def load_csv_metadata_file(metadata):
 				attributes = line[1:]
 				for i in range(len(attributes)):
 					key = headers[i].lower()
-					value = attributes[i]
+					value = unicode(attributes[i],"utf-8")
 					metadata_dict[filename][key] = value
 		metadata = metadata_dict
 	else :
