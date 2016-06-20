@@ -8,7 +8,7 @@ import iamassaccess
 
 app = flask.Flask(__name__)
 
-# Croosdomain decorator to enable cross domain request
+# Crossdomain decorator to enable cross domain request
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
                 automatic_options=True):
@@ -50,6 +50,11 @@ def crossdomain(origin=None, methods=None, headers=None,
         return functools.update_wrapper(wrapped_function, f)
     return decorator
 
+@app.route("/")
+@crossdomain(origin='*')
+def index():
+    return ''
+
 @app.route("/create")
 @crossdomain(origin='*')
 def create():
@@ -60,12 +65,12 @@ def create():
 
 @app.route("/update")
 @crossdomain(origin='*')
-def create():
+def update():
     return iamassaccess.updateItems(args.metadata)
 
 @app.route("/delete")
 @crossdomain(origin='*')
-def create():
+def delete():
     return iamassaccess.deleteItems(args.metadata)
 
 if __name__ == "__main__":

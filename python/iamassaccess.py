@@ -8,7 +8,6 @@ import logging
 import os
 import sys
 import argparse
-from collections import defaultdict
 
 # Check if file argument is valid and returns it opened
 def is_valid_file(arg):
@@ -26,7 +25,7 @@ def is_valid_folder(arg):
 
 # Logs folder structure problem/error and print out correct folder structure guidelines
 def print_folder_structure_problem():
-	logging.error("Folder of files to upload does not comply with file structure")
+	logging.error("Folder of files to upload does not comply with file structure.")
 	print """
 	Folder of files to upload does not comply with following file structure
 	- folder
@@ -125,99 +124,95 @@ def load_json_metadata_file(metadata):
 
 # Uploads files in folders in new items or in existing items if they exists
 def createItems(folder, headers):
-	metadata, files = walk_files_upload(folder)
-	for folder in files:
-		item = internetarchive.get_item(folder)
-		# Check if item already exists
-		if item.exists :
-			logging.error('Item "' + folder + '" already exists. Please use the "UPDATE" mode to update its metadata.')
-		# If item does not already exist, upload it
-		else :
-			files_for_item = files[folder]
-			metadata_for_item = metadata[folder]
-			item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-			logging.info('Files uploaded for item : ' + folder)
+	try:
+		log_folder
+	except NameError:
+		init()
+	if is_valid_folder(x):
+		metadata, files = walk_files_upload(folder)
+		for folder in files:
+			item = internetarchive.get_item(folder)
+			# Check if item already exists
+			if item.exists:
+				logging.error('Item "' + folder + '" already exists. Please use the "UPDATE" mode to update its metadata.')
+			# If item does not already exist, upload it
+			else :
+				files_for_item = files[folder]
+				metadata_for_item = metadata[folder]
+				item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
+				logging.info('Files uploaded for item : ' + folder)
+	else:
+		logging.error('The folder ' + folder + ' does not exist.')
 
 # Modify metadata : modify an item's metadata or create new one
 def updateItems(metadata_file):
-	metadata = load_csv_metadata_file(metadata_file)
-	for file in metadata:
-		item = internetarchive.get_item(file)
-		# Check if item already exists
-		if not item.exists :
-			logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
-		# If item does not already exist, upload it
-		else:
-			item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
-			logging.info('Metadata modified for item : ' + str(item.identifier))
+	try:
+		log_folder
+	except NameError:
+		init()
+	if is_valid_file(metadata_file):
+		metadata = load_csv_metadata_file(metadata_file)
+		for file in metadata:
+			item = internetarchive.get_item(file)
+			# Check if item already exists
+			if not item.exists:
+				logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
+			# If item does not already exist, upload it
+			else:
+				item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
+				logging.info('Metadata modified for item : ' + str(item.identifier))
+	else:
+		logging.error('The file ' + metadata_file + ' does not exist.')
 
-# 
+# Delete an list of items (All the files are not deleted)
 def deleteItems(metadata_file):
-	metadata = load_csv_metadata_file(metadata_file)
-	for item_name in metadata:
-		item = internetarchive.get_item(item_name)
-		# Check if item already exists
-		if item.exists :
-			# Gets files in the item
-			files = item.get_files(glob_pattern='*')
-			# Deletes them one by one
-			for file in files:
-				file.delete(access_key=conf['access_key'], secret_key=conf['secret_key'])
-			logging.info('All files of the item "' + item_name + '" are deleted.')
-		else :
-			logging.error('Item "' + item_name + '" does not exist. Can\'t delete an item that doesn\'t exist.')
+	try:
+		log_folder
+	except NameError:
+		init()
+	if is_valid_file(metadata_file) :
+		metadata = load_csv_metadata_file(metadata_file)
+		for item_name in metadata:
+			item = internetarchive.get_item(item_name)
+			# Check if item already exists
+			if item.exists :
+				# Gets files in the item
+				files = item.get_files(glob_pattern='*')
+				# Deletes them one by one
+				for file in files:
+					file.delete(access_key=conf['access_key'], secret_key=conf['secret_key'])
+				logging.info('All files of the item "' + item_name + '" are deleted.')
+			else :
+				logging.error('Item "' + item_name + '" does not exist. Can\'t delete an item that doesn\'t exist.')
+	else :
+		logging.error('The file ' + metadata_file + ' does not exist.')
 
-# Logging initiation routine
-log_folder = 'log'
-log_level = logging.DEBUG
-item_id = 'new_al_item'
+# Init log and argparse
+def init():
+	# Logging initiation routine
+	log_folder = 'log'
+	log_level = logging.DEBUG
+	item_id = 'new_al_item'
 
-# Check that log folder exists, else create it
-if not os.path.exists(log_folder) :
-	os.makedirs(log_folder)
-# Create log file path
-log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
-# Init logs
-logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
-logging.info('Start')
+	# Check that log folder exists, else create it
+	if not os.path.exists(log_folder) :
+		os.makedirs(log_folder)
+	# Create log file path
+	log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
+	# Init logs
+	logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
+	logging.info('Start')
 
-# Argument parser configuration + parsing of args
-parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
-parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
-parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada csv file : headers + 1 row/file")
-parser.add_argument('--folder', dest='folder', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
-args = parser.parse_args()
+	# Load conf file
+	conf_file = os.path.join('conf', 'conf.json')
+	if os.path.exists(conf_file) :
+		with open(conf_file) as f :
+			conf = json.load(f)
+		logging.info('Conf file loaded')
+	else :
+		logging.error('No conf file provided')
+		sys.exit(0)
 
-# Check arguments and validity of mode + files provided
-if args.mode == 'create' and args.folder is None:
-	logging.error('Mode chosen is CREATE and no files are provided to upload')
-	sys.exit(0)
-elif args.mode == 'update' and args.metadata is None:
-	logging.error('Mode chosen is UPDATE and no metadata file is provided to update files')
-	sys.exit(0)
-elif args.mode == 'delete' and args.metadata is None:
-	logging.error('Mode chosen is DELETE and no metadata file is provided to delete files')
-	sys.exit(0)
-
-# Load conf file
-conf_file = os.path.join('conf', 'conf.json')
-if os.path.exists(conf_file) :
-	with open(conf_file) as f :
-		conf = json.load(f)
-	logging.info('Conf file loaded')
-else :
-	logging.error('No conf file provided')
-	sys.exit(0)
-
-# Headers : add additional HTTP headers to the request if needed
-# RTFM : http://archive.org/help/abouts3.txt
-headers = dict()
-
-if args.mode == 'create':
-	createItems(args.folder, headers)
-elif args.mode == 'update':
-	updateItems(args.metadata)
-elif args.mode == 'delete':
-	deleteItems(args.metadata)
-
-logging.info('End')
+	# Headers : add additional HTTP headers to the request if needed
+	# RTFM : http://archive.org/help/abouts3.txt
+	headers = dict()
