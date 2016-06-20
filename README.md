@@ -4,13 +4,16 @@ Upload and modify in mass for Internet Access :
 - add metadata in existing item
 
 ## install
+- mkvirtualenv iamassaccess
 - pip install internetarchive
+- pip install Flask
 - rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
+
 ## usage
 
-### Write your metadata file
+### write your metadata file
 The metadata has to be CSV file.
 Data are separated by commas.
 The metadata values should be surrounded by double quotes.
@@ -21,10 +24,13 @@ The first column has to be the identifiers of the Internet Archive items.
 For the "subject" metadata key, multiple values have to be separated by a semicolon ";".
 Warning, if several lines have the same identifier, only the last line will be taken into consideration.
 
-### Execute python script
+### execute python script
 python iamassaccess.py MODE [--metadata METADATA] [--folder FOLDER]
 python iamassaccess.py update --metadata test/metadata.csv --folder test
 MODE can be create, update, delete
+
+### launch server as daemon
+python server.py &
 
 ## docs
 https://blog.archive.org/2013/07/04/metadata-api/
