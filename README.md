@@ -25,8 +25,8 @@ For the "subject" metadata key, multiple values have to be separated by a semico
 Warning, if several lines have the same identifier, only the last line will be taken into consideration.
 
 ### execute python script
-python iamassaccess.py MODE [--metadata METADATA] [--folder FOLDER]
-python iamassaccess.py update --metadata test/metadata.csv --folder test
+python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]
+python iamassaccess_cli.py update --metadata test/metadata.csv --folder test
 MODE can be create, update, delete
 
 ### launch server as daemon
