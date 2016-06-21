@@ -189,6 +189,8 @@ def deleteItems(metadata_file):
 
 # Init log and argparse
 def init():
+	global conf
+
 	# Logging initiation routine
 	log_folder = 'log'
 	log_level = logging.DEBUG
