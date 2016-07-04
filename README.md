@@ -41,7 +41,7 @@ MODE can be create, update, delete
 ### launch server as daemon
 python server.py &
 
-Then the url of the server will be http://localhost:5000/ (Flask default one).
+Then the url of the server will be <http://localhost:5000/> (Flask default one).
 
 ## docs
 https://blog.archive.org/2013/07/04/metadata-api/
