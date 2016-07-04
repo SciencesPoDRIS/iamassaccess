@@ -14,21 +14,21 @@ http://archive.org/account/s3.php
 ## usage
 
 ### write your metadata file
-The metadata has to be CSV file.
+The metadata has to be a CSV file.
 
-Data are separated by commas.
+Data are separated by commas `,`.
 
-The metadata values should be surrounded by double quotes.
+The metadata values should be surrounded by double quotes `"`.
 
 The metadata keys are not case sensitive.
 
 Te metadata values are case sensitive.
 
-The first line has to be the list of the metadata keys.
+The first line has to be the list of the metadata keys (called headers).
 
 The first column has to be the identifiers of the Internet Archive items.
 
-For the "subject" metadata key, multiple values have to be separated by a semicolon ";".
+For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
 Warning, if several lines have the same identifier, only the last line will be taken into consideration.
 
@@ -40,6 +40,8 @@ MODE can be create, update, delete
 
 ### launch server as daemon
 python server.py &
+
+Then the url of the server will be http://localhost:5000/ (Flask default one).
 
 ## docs
 https://blog.archive.org/2013/07/04/metadata-api/
