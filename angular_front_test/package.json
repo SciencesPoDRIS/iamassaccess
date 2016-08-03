@@ -1,0 +1,33 @@
+{
+  "name": "angular_front_test",
+  "version": "1.0.0",
+  "description": "brave new angular front for iamassaccess",
+  "main": "myapp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SciencesPoDRIS/iamassaccess.git"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "internetarchive"
+  ],
+  "author": "diegantobass",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SciencesPoDRIS/iamassaccess/issues"
+  },
+  "homepage": "https://github.com/SciencesPoDRIS/iamassaccess#readme",
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "angular-csv-import": "0.0.27",
+    "angular-material": "^1.0.9",
+    "angular-material-data-table": "^0.10.9",
+    "ng-table": "^1.0.0"
+  }
+}
