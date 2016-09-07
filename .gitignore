@@ -22,3 +22,8 @@ python/test
 # Python compiled files
 #
 *.pyc
+
+#
+# Node modules
+#
+angular_front_test/node_modules
