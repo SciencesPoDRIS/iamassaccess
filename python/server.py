@@ -3,10 +3,12 @@
 
 import datetime
 import flask
+from flask_cors import CORS, cross_origin
 import functools
 import iamassaccess
 
 app = flask.Flask(__name__)
+CORS(app)
 
 # Crossdomain decorator to enable cross domain request
 def crossdomain(origin=None, methods=None, headers=None,
@@ -37,13 +39,11 @@ def crossdomain(origin=None, methods=None, headers=None,
             if not attach_to_all and flask.request.method != 'OPTIONS':
                 return resp
 
-            h = resp.headers
-
-            h['Access-Control-Allow-Origin'] = origin
-            h['Access-Control-Allow-Methods'] = get_methods()
-            h['Access-Control-Max-Age'] = str(max_age)
+            resp.headers['Access-Control-Allow-Origin'] = origin
+            resp.headers['Access-Control-Allow-Methods'] = get_methods()
+            resp.headers['Access-Control-Max-Age'] = str(max_age)
             if headers is not None:
-                h['Access-Control-Allow-Headers'] = headers
+                resp.headers['Access-Control-Allow-Headers'] = headers
             return resp
 
         f.provide_automatic_options = False

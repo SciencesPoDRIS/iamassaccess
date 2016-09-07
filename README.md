@@ -7,6 +7,7 @@ Upload and modify in mass for Internet Access :
 - mkvirtualenv iamassaccess
 - pip install internetarchive
 - pip install Flask
+- pip install -U flask-cors
 - rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
@@ -22,7 +23,7 @@ The metadata values should be surrounded by double quotes `"`.
 
 The metadata keys are not case sensitive.
 
-Te metadata values are case sensitive.
+The metadata values are case sensitive.
 
 The first line has to be the list of the metadata keys (called headers).
 
