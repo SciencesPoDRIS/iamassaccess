@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="node_modules/angular-material/angular-material.css" />
     <style type="text/css">
     /**
-		* Hide when Angular is not yet loaded and initialized
-		*/
+        * Hide when Angular is not yet loaded and initialized
+        */
     
     [ng\:cloak],
     [ng-cloak],
@@ -36,24 +36,11 @@
                         <h1 class="md-display-2">Create</h1>
                         <p>Uploads new files to Internet Archive and set their metadata</p>
                         <md-content>
-                            <div>
-                                <ng-csv-import content="csv.content" header="csv.header" separator="csv.separator" result="csv.result" accept="csv.accept">
-                                </ng-csv-import>
-                                <table ng-table="ngparam" ng-if="csv.content">
-                                    <tr>
-                                        <th ng-repeat="header in csv.header">{{ header }}</th>
-                                    </tr>
-                                    <tr ng-repeat="row in csv.result">
-                                        <td ng-repeat="(key, value) in row">
-                                            {{ value }}
-                                        </td>
-                                    </tr>
-                                </table>
-                                <div>
-                                    C'est le zip
-                                    <my-file-input file="zipfile"></my-file-input>
-                                </div>
-                            </div>
+                            <form name="form">
+                                <input type="file" ngf-select="" ng-model="file" name="file" ngf-accept="'.zip'" required="" class="ng-pristine ng-invalid ng-invalid-required" accept=".zip">
+                                <br />
+                                <button type="submit" ng-click="submit()">Upload</button>
+                            </form>
                         </md-content>
                     </md-content>
                 </md-tab>
@@ -79,10 +66,11 @@
     <script type="text/javascript" src="node_modules/angular-material/angular-material.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-csv-import/dist/angular-csv-import.min.js"></script>
     <script type="text/javascript" src="node_modules/ng-table/dist/ng-table.min.js"></script>
+    <script type="text/javascript" src="node_modules/ng-file-upload/dist/ng-file-upload-shim.min.js"></script>
+    <script type="text/javascript" src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
     <!-- Project angular js -->
     <script type="text/javascript" src="myapp.js"></script>
     <script type="text/javascript" src="directives.js"></script>
-    <script type="text/javascript" src="client.js"></script>
 </body>
 
 </html>
