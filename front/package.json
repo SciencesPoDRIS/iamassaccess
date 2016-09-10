@@ -1,5 +1,5 @@
 {
-  "name": "angular_front_test",
+  "name": "iamassaccess",
   "version": "1.0.0",
   "description": "brave new angular front for iamassaccess",
   "main": "myapp.js",
@@ -15,7 +15,7 @@
     "material",
     "internetarchive"
   ],
-  "author": "diegantobass",
+  "author": "diegantobass, annelhote",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/SciencesPoDRIS/iamassaccess/issues"
