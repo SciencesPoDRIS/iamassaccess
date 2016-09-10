@@ -21,4 +21,4 @@ server/log
 #
 # Node modules
 #
-angular_front_test/node_modules
+front/node_modules
