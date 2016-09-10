@@ -132,8 +132,8 @@ def upload_file():
             z = zipfile.ZipFile(filepath)
             z.extractall(app.config['UPLOAD_FOLDER'])
             headers = dict()
-            return 'Success : File uploaded'
-            # return iamassaccess.createItems(filepath.replace('.zip', ''), headers)
+            iamassaccess.createItems(filepath.replace('.zip', ''), headers)
+            return 'Success : File uploaded and items created into Internet Archive'
     return '''
     <!doctype html>
     <title>Upload new File</title>

@@ -66,10 +66,10 @@ def walk_files_folder(folder):
 def walk_files_upload(folder):
 	items = os.listdir(folder)
 
-	if "metadata.csv" in items:
+	if 'metadata.csv' in items:
 		metadata_dic = load_csv_metadata_file(os.path.join(folder, 'metadata.csv'))
 	else:
-		logging.error('No metadata file provided')
+		logging.error('No metadata file provided. A file named \'metadata.csv\' should be in the zip folder.')
 		sys.exit(0)
 
 	files_dic = {}
@@ -109,7 +109,7 @@ def load_csv_metadata_file(metadata):
 		metadata = metadata_dict
 	else :
 		metadata = None
-		logging.info("Specified metadata file doesn't exist or impossible to load")
+		logging.info('Specified metadata file doesn\'t exist or impossible to load')
 	return metadata
 
 # Load a json file to a dictionary (used for the metadata)
@@ -119,7 +119,7 @@ def load_json_metadata_file(metadata):
 			metadata = json.load(metadata_file)
 	else :
 		metadata = None
-		logging.info("Specified metadata file doesn't exist or impossible to load")
+		logging.info('Specified metadata file doesn\'t exist or impossible to load')
 	return metadata
 
 # Uploads files in folders in new items or in existing items if they exists
@@ -128,7 +128,7 @@ def createItems(folder, headers):
 		log_folder
 	except NameError:
 		init()
-	if is_valid_folder(x):
+	if is_valid_folder(folder):
 		metadata, files = walk_files_upload(folder)
 		for folder in files:
 			item = internetarchive.get_item(folder)
@@ -192,27 +192,21 @@ def init():
 	global conf
 
 	# Logging initiation routine
-	log_folder = 'log'
+	log_file = 'server/log/iamassaccess.log'
 	log_level = logging.DEBUG
-	item_id = 'new_al_item'
 
-	# Check that log folder exists, else create it
-	if not os.path.exists(log_folder) :
-		os.makedirs(log_folder)
-	# Create log file path
-	log_file = os.path.join(log_folder, sys.argv[0].replace('.py', '.log'))
 	# Init logs
 	logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
 	logging.info('Start')
 
 	# Load conf file
-	conf_file = os.path.join('conf', 'conf.json')
+	conf_file = os.path.join('server', 'conf', 'conf.json')
 	if os.path.exists(conf_file) :
 		with open(conf_file) as f :
 			conf = json.load(f)
 		logging.info('Conf file loaded')
 	else :
-		logging.error('No conf file provided')
+		logging.error('No conf file provided or wrong path : ' + conf_file)
 		sys.exit(0)
 
 	# Headers : add additional HTTP headers to the request if needed
