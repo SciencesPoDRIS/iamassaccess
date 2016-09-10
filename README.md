@@ -4,10 +4,10 @@ Upload and modify in mass for Internet Access :
 - add metadata in existing item
 
 ## install
-- mkvirtualenv iamassaccess
-- pip install internetarchive
-- pip install Flask
-- pip install -U flask-cors
+- `mkvirtualenv iamassaccess`
+- `pip install internetarchive`
+- `pip install Flask`
+- `pip install -U flask-cors`
 - rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
@@ -39,10 +39,16 @@ python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]
 python iamassaccess_cli.py update --metadata test/metadata.csv --folder test
 MODE can be create, update, delete
 
-### launch server as daemon
-python server/server.py
+### launch server
+- `python server/server.py`
 
 Then the url of the server will be <http://localhost:5000/> (Flask default one).
+
+### launch website
+- `cd front`
+- `python -m SimpleHTTPServer`
+
+Then the url of the site will be <http://localhost:8000>.
 
 ## docs
 https://blog.archive.org/2013/07/04/metadata-api/
