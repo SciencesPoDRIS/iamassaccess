@@ -1,13 +1,35 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
 
+#
+# Imports
+#
+
 import datetime
 import flask
 from flask_cors import CORS, cross_origin
 import functools
 import iamassaccess
+import os
+from werkzeug.utils import secure_filename
+
+
+#
+# Config
+#
+
+UPLOAD_FOLDER = 'server/download'
+ALLOWED_EXTENSIONS = set(['zip'])
+
+
+#
+# Funcions
+#
 
 app = flask.Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SESSION_TYPE'] = 'memcached'
+app.config['SECRET_KEY'] = 'thisissecrete'
 CORS(app)
 
 # Crossdomain decorator to enable cross domain request
@@ -50,6 +72,16 @@ def crossdomain(origin=None, methods=None, headers=None,
         return functools.update_wrapper(wrapped_function, f)
     return decorator
 
+# Check if an extension is valid
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+#
+# Routing
+#
+
 @app.route("/")
 @crossdomain(origin='*')
 def index():
@@ -72,6 +104,45 @@ def update():
 @crossdomain(origin='*')
 def delete():
     return iamassaccess.deleteItems(args.metadata)
+
+# Uploads the file and redirects the user to the URL for the uploaded file
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if flask.request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in flask.request.files:
+            flask.flash('No file part')
+            return flask.redirect(flask.request.url)
+        file = flask.request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flask.flash('No selected file')
+            return flask.redirect(flask.request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flask.flash('Ok, file uploaded')
+            return flask.redirect(flask.request.url)
+            # return flask.redirect(flask.url_for('uploaded_file', filename=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return flask.send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+#
+# Main
+#
 
 if __name__ == "__main__":
     app.run()

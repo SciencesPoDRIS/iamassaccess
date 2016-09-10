@@ -1,17 +1,12 @@
 #
 # Conf file
 #
-python/conf/conf.json
+server/conf/conf.json
 
 #
 # Log folder
 #
-python/log
-
-#
-# Test folder
-#
-python/test
+server/log
 
 #
 # DS_Store
