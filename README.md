@@ -40,7 +40,7 @@ python iamassaccess_cli.py update --metadata test/metadata.csv --folder test
 MODE can be create, update, delete
 
 ### launch server as daemon
-python server.py &
+python server/server.py
 
 Then the url of the server will be <http://localhost:5000/> (Flask default one).
 
