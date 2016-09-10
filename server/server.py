@@ -123,8 +123,9 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flask.flash('Ok, file uploaded')
-            return flask.redirect(flask.request.url)
+            # return flask.redirect(flask.request.url)
             # return flask.redirect(flask.url_for('uploaded_file', filename=filename))
+            return 'Ok, file uploaded'
     return '''
     <!doctype html>
     <title>Upload new File</title>
