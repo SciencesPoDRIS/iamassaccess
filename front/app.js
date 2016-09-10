@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    var app = angular.module("myapp", ['ngMaterial', 'ngCsvImport', 'myapp.directives', 'ngTable', 'ngFileUpload']);
+    var app = angular.module("iamassaccess", ['ngMaterial', 'ngCsvImport', 'myapp.directives', 'ngTable', 'ngFileUpload']);
 
     app.controller("MainControl", ['$scope', 'NgTableParams', 'Upload', function($scope, NgTableParams, Upload) {
         $scope.csv = {
