@@ -12,6 +12,7 @@ import functools
 import iamassaccess
 import os
 from werkzeug.utils import secure_filename
+import zipfile
 
 
 #
@@ -124,8 +125,15 @@ def upload_file():
             return 'Error : This file type is not allowed'
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Upload file
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            # Unzip file
+            z = zipfile.ZipFile(filepath)
+            z.extractall(app.config['UPLOAD_FOLDER'])
+            headers = dict()
             return 'Success : File uploaded'
+            # return iamassaccess.createItems(filepath.replace('.zip', ''), headers)
     return '''
     <!doctype html>
     <title>Upload new File</title>
