@@ -31,24 +31,18 @@
     <div ng-cloak ng-controller="MainControl">
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="create">
+                <md-tab label="create and update">
                     <md-content class="md-padding">
-                        <h1 class="md-display-2">Create</h1>
-                        <p>Uploads new files to Internet Archive and set their metadata</p>
+                        <h1 class="md-display-2">Create and update</h1>
+                        <p>Uploads new or existing files to Internet Archive and set their metadata</p>
                         <md-content>
                             <form name="form">
                                 <input type="file" ngf-select="" ng-model="file" name="file" ngf-accept="'.zip'" required="" class="ng-pristine ng-invalid ng-invalid-required" accept=".zip">
                                 <br />
                                 <button type="submit" ng-click="submit()">Upload</button>
                             </form>
-                            <div>{{message}}</div>
+                            <div><pre>{{message}}</pre></div>
                         </md-content>
-                    </md-content>
-                </md-tab>
-                <md-tab label="update">
-                    <md-content class="md-padding">
-                        <h1 class="md-display-2">Update</h1>
-                        <p>Updates the metadata of existing Internet Archive items</p>
                     </md-content>
                 </md-tab>
                 <md-tab label="delete">
