@@ -43,6 +43,7 @@ if __name__ == '__main__' :
 		sys.exit(0)
 
 	if args.mode == 'create':
+		headers = dict()
 		iamassaccess.createItems(args.folder, headers)
 	elif args.mode == 'update':
 		iamassaccess.updateItems(args.metadata)
