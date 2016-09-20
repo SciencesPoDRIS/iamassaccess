@@ -164,7 +164,7 @@ def updateItems(metadata_file):
 	else:
 		logging.error('The file ' + metadata_file + ' does not exist.')
 
-# Delete an list of items (All the files are not deleted)
+# Delete a list of items (All the files are not deleted)
 def deleteItems(metadata_file):
 	try:
 		log_folder
