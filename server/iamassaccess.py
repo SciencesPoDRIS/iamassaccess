@@ -192,11 +192,15 @@ def init():
 	global conf
 
 	# Logging initiation routine
-	log_file = 'server/log/iamassaccess.log'
+	log_folder = 'server/log'
+	log_file = 'iamassaccess.log'
 	log_level = logging.DEBUG
 
+	# Check if the "log" folder exists, else create it
+	if not os.path.isdir(log_folder) :
+		os.mkdir(log_folder)
 	# Init logs
-	logging.basicConfig(filename = log_file, filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
+	logging.basicConfig(filename = os.path.join(log_folder, log_file), filemode = 'a+', format = '%(asctime)s  |  %(levelname)s  |  %(message)s', datefmt = '%m/%d/%Y %I:%M:%S %p', level = log_level)
 	logging.info('Start')
 
 	# Load conf file
