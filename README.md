@@ -27,7 +27,7 @@ The metadata values are case sensitive.
 
 The first line has to be the list of the metadata keys (called headers).
 
-The first column has to be the identifiers of the Internet Archive items.
+The first column has to be the identifiers of the Internet Archive items. Thi sidentifier has to be unique on Internet Archive (strange but real).
 
 For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
@@ -36,8 +36,10 @@ Warning, if several lines have the same identifier, only the last line will be t
 
 ### execute python script
 python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]
+
 python iamassaccess_cli.py update --metadata test/metadata.csv --folder test
-MODE can be create, update, delete
+
+MODE can be create or update
 
 ### launch server
 - `python server/server.py`
