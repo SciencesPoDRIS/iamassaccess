@@ -24,7 +24,7 @@ ALLOWED_EXTENSIONS = set(['zip'])
 
 
 #
-# Funcions
+# Functions
 #
 
 app = flask.Flask(__name__)
@@ -78,6 +78,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+# Check if the "download" folder exists, else create it
+def check_folders():
+    if not os.path.isdir(UPLOAD_FOLDER) :
+        os.mkdir(UPLOAD_FOLDER)
+
 
 #
 # Routing
@@ -90,23 +95,23 @@ def index():
     <h1>Welcome on the IAMassAccess Backend</h1>
     '''
 
-@app.route("/create")
-@crossdomain(origin='*')
-def create():
-    # Headers : add additional HTTP headers to the request if needed
-    # RTFM : http://archive.org/help/abouts3.txt
-    headers = dict()
-    return iamassaccess.createItems(args.folder, headers)
+# @app.route("/create")
+# @crossdomain(origin='*')
+# def create():
+#     # Headers : add additional HTTP headers to the request if needed
+#     # RTFM : http://archive.org/help/abouts3.txt
+#     headers = dict()
+#     return iamassaccess.createItems(args.folder, headers)
 
-@app.route("/update")
-@crossdomain(origin='*')
-def update():
-    return iamassaccess.updateItems(args.metadata)
+# @app.route("/update")
+# @crossdomain(origin='*')
+# def update():
+#     return iamassaccess.updateItems(args.metadata)
 
-@app.route("/delete")
-@crossdomain(origin='*')
-def delete():
-    return iamassaccess.deleteItems(args.metadata)
+# @app.route("/delete")
+# @crossdomain(origin='*')
+# def delete():
+#     return iamassaccess.deleteItems(args.metadata)
 
 # Upload the file and send status message
 @app.route('/upload', methods=['GET', 'POST'])
@@ -150,4 +155,5 @@ def upload_file():
 #
 
 if __name__ == "__main__":
+    check_folders()
     app.run()
