@@ -1,59 +1,64 @@
 # iamassaccess
-Upload and modify in mass for Internet Access : 
-- upload several items in Internet Archive. Items are PDF & Images and metadata
-- add metadata in existing item
 
-## install
-- `mkvirtualenv iamassaccess`
-- `pip install internetarchive`
-- `pip install Flask`
-- `pip install -U flask-cors`
-- rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
+## Description
+Upload and modify in mass for Internet Archive : 
+- Upload several new items in Internet Archive with their metadata. Items are texts & images.
+- Add or modify metadata to existing items.
+
+## Installation
+`> mkvirtualenv iamassaccess`
+`> pip install internetarchive`
+`> pip install Flask`
+`> pip install -U flask-cors`
+- Rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
 
-## usage
+## Usage
 
-### write your metadata file
+### Write your metadata file
 The metadata has to be a CSV file.
 
 Data are separated by commas `,`.
 
-The metadata values should be surrounded by double quotes `"`.
+If your data contains a comma `,`, it has to be surrounded by double quotes `"`.
 
 The metadata keys are not case sensitive.
 
 The metadata values are case sensitive.
 
-The first line has to be the list of the metadata keys (called headers).
+The first line has to be the list of the metadata keys / names (called headers).
 
-The first column has to be the identifiers of the Internet Archive items. Thi sidentifier has to be unique on Internet Archive (strange but real).
+The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!!
+
+Warning, if several lines in the metadata file have the same identifier, only the last line will be taken into consideration.
+[Important : About identifiers](http://internetarchive.readthedocs.io/en/latest/metadata.html#archive-org-identifiers)
 
 For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
-Warning, if several lines have the same identifier, only the last line will be taken into consideration.
+### Execute python script
+`> python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]`
 
+MODE can be either 'create' or 'update'.
 
-### execute python script
-python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]
+`> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
 
-python iamassaccess_cli.py update --metadata test/metadata.csv --folder test
-
-MODE can be create or update
-
-### launch server
-- `python server/server.py`
+### Launch server
+`> python server/server.py`
 
 Then the url of the server will be <http://localhost:5000/> (Flask default one).
 
-### launch website
-- `cd front`
-- `python -m SimpleHTTPServer`
+### Launch website
+`> cd front`
+`> python -m SimpleHTTPServer`
 
 Then the url of the site will be <http://localhost:8000>.
 
-## docs
-https://blog.archive.org/2013/07/04/metadata-api/
+## Links
+<https://blog.archive.org/2013/07/04/metadata-api/>
+<http://internetarchive.readthedocs.io/en/latest/>
 
-## trivia
-- can't name your items "idX" where 'X' is in an integer
+## Trivia
+- You can't name your items identifier "idX" where 'X' is in an integer.
+- It seems that you can't name your items identifier like 'aa' or 'bb' or even anything shorter than 4 letters string (???).
+- On InternetArchive, if you create at least 50 item you can have a collection for them. just contact us then and we'll create it for you. Please send your request to info at archive dot org [API](http://internetarchive.readthedocs.io/en/latest/metadata.html#collection)
