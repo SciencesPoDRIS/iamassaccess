@@ -40,6 +40,9 @@ Warning, if several lines in the metadata file have the same identifier, only th
 
 For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
+To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
+
+
 ### Execute python script
 `> python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]`
 
