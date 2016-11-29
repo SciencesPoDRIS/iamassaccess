@@ -7,9 +7,13 @@ Upload and modify in mass for Internet Archive :
 
 ## Installation
 `> mkvirtualenv iamassaccess`
+
 `> pip install internetarchive`
+
 `> pip install Flask`
+
 `> pip install -U flask-cors`
+
 - Rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
@@ -43,6 +47,7 @@ MODE can be either 'create' or 'update'.
 
 `> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
 
+
 ### Launch server
 `> python server/server.py`
 
@@ -50,6 +55,7 @@ Then the url of the server will be <http://localhost:5000/> (Flask default one).
 
 ### Launch website
 `> cd front`
+
 `> python -m SimpleHTTPServer`
 
 Then the url of the site will be <http://localhost:8000>.
