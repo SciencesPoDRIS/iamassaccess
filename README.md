@@ -28,6 +28,7 @@ Data are separated by commas `,`.
 If your data contains a comma `,`, it has to be surrounded by double quotes `"`.
 
 The metadata keys are not case sensitive.
+The metadata keys should not contain space or accent.
 
 The metadata values are case sensitive.
 
