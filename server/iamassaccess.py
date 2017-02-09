@@ -99,7 +99,7 @@ def load_csv_metadata_file(metadata):
 			metadata_csv = csv.reader(metadata_file)
 			headers = metadata_csv.next()[1:] # list of attributes names minus file identifiers in the first columns
 			for line in metadata_csv:
-				filename = line[0].lower()
+				filename = line[0]
 				metadata_dict[filename] = dict()
 				attributes = line[1:]
 				for i in range(len(attributes)):
