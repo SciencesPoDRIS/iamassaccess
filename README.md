@@ -34,7 +34,7 @@ The metadata values are case sensitive.
 
 The first line has to be the list of the metadata keys / names (called headers).
 
-The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!!
+The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!! Archive identifiers are case sensitive.
 
 Warning, if several lines in the metadata file have the same identifier, only the last line will be taken into consideration.
 [Important : About identifiers](http://internetarchive.readthedocs.io/en/latest/metadata.html#archive-org-identifiers)
