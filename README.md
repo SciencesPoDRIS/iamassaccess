@@ -41,6 +41,8 @@ Warning, if several lines in the metadata file have the same identifier, only th
 
 For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
+For the "date" metadata, the values have to be formatted as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
+
 To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
 
 
