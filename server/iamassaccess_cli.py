@@ -1,9 +1,19 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
 
+
+#
+# Libs
+#
+
 import argparse
 import iamassaccess
 import os
+
+
+#
+# Functions
+#
 
 # Check if file argument is valid and returns it opened
 def is_valid_file(arg):
@@ -18,6 +28,7 @@ def is_valid_folder(arg):
 		logging.error("The folder %s does not exist" % arg)
 	else:
 		return arg
+
 
 #
 # Main
