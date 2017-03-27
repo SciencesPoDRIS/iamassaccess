@@ -36,6 +36,7 @@ def is_valid_folder(arg):
 #
 
 if __name__ == '__main__' :
+	logging.info('Start script')
 	# Argument parser configuration + parsing of args
 	parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
 	parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
@@ -61,3 +62,5 @@ if __name__ == '__main__' :
 		iamassaccess.updateItems(args.metadata)
 	elif args.mode.lower() == 'delete':
 		iamassaccess.deleteItems(args.metadata)
+
+	logging.info('End script')
