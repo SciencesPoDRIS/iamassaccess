@@ -44,20 +44,20 @@ if __name__ == '__main__' :
 	args = parser.parse_args()
 
 	# Check arguments and validity of mode + files provided
-	if args.mode == 'create' and args.folder is None:
+	if args.mode.lower() 'create' and args.folder is None:
 		logging.error('Mode chosen is CREATE and no files are provided to upload')
 		sys.exit(0)
-	elif args.mode == 'update' and args.metadata is None:
+	elif args.mode.lower() == 'update' and args.metadata is None:
 		logging.error('Mode chosen is UPDATE and no metadata file is provided to update files')
 		sys.exit(0)
-	elif args.mode == 'delete' and args.metadata is None:
+	elif args.mode.lower() == 'delete' and args.metadata is None:
 		logging.error('Mode chosen is DELETE and no metadata file is provided to delete files')
 		sys.exit(0)
 
-	if args.mode == 'create':
+	if args.mode.lower() == 'create':
 		headers = dict()
 		iamassaccess.createItems(args.folder, headers)
-	elif args.mode == 'update':
+	elif args.mode.lower() == 'update':
 		iamassaccess.updateItems(args.metadata)
-	elif args.mode == 'delete':
+	elif args.mode.lower() == 'delete':
 		iamassaccess.deleteItems(args.metadata)
