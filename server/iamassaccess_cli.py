@@ -7,17 +7,17 @@ import os
 
 # Check if file argument is valid and returns it opened
 def is_valid_file(arg):
-    if not os.path.exists(arg):
-        logging.error("The file %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.exists(arg):
+		logging.error("The file %s does not exist" % arg)
+	else:
+		return arg
 
 # Check if folder argument is valid and returns its path
 def is_valid_folder(arg):
-    if not os.path.isdir(arg):
-        logging.error("The folder %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.isdir(arg):
+		logging.error("The folder %s does not exist" % arg)
+	else:
+		return arg
 
 #
 # Main
