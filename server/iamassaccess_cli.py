@@ -1,5 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf8 -*-
+# Execution example : python server/iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]
 
 
 #
