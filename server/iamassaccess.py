@@ -11,17 +11,17 @@ import argparse
 
 # Check if file argument is valid and returns it opened
 def is_valid_file(arg):
-    if not os.path.exists(arg):
-        logging.error("The file %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.exists(arg):
+		logging.error("The file %s does not exist" % arg)
+	else:
+		return arg
 
 # Check if folder argument is valid and returns its path
 def is_valid_folder(arg):
-    if not os.path.isdir(arg):
-        logging.error("The folder %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.isdir(arg):
+		logging.error("The folder %s does not exist" % arg)
+	else:
+		return arg
 
 # Logs folder structure problem/error and print out correct folder structure guidelines
 def print_folder_structure_problem():
@@ -30,13 +30,13 @@ def print_folder_structure_problem():
 	Folder of files to upload does not comply with following file structure
 	- folder
 	  - file_1
-	    - doc_to_upload
-	    - doc_to_upload
-	    - doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
 	  - file_2
-	    - doc_to_upload
-	    - doc_to_upload
-	    - doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
 	  - metadata.csv
 	"""
 	sys.exit(0)
@@ -44,9 +44,9 @@ def print_folder_structure_problem():
 # Check metadata file and folder structure for correspondance (enough metadata for each file and vice-versa)
 def metadata_folder_consistency(metadata_dic, files_dic):
 	for file in files_dic:
-	 	if file not in metadata_dic.keys():
-	 		logging.error("Missing metadatas for file %s" % file)
-	 		sys.exit(0)
+		if file not in metadata_dic.keys():
+			logging.error("Missing metadatas for file %s" % file)
+			sys.exit(0)
 	for metadata in metadata_dic:
 		if metadata not in files_dic.keys():
 			logging.error("Metadata " + metadata + " in the file metadata.csv isn't attributed to a file.")
