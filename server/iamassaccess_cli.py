@@ -51,7 +51,7 @@ if __name__ == '__main__' :
 
 	# Argument parser configuration + parsing of args
 	parser = argparse.ArgumentParser(description='Bulk upload your items on archive.org, delete them or update their metadata!')
-	parser.add_argument('mode', action='store', choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
+	parser.add_argument('mode', action='store', type=str.lower, choices=['create', 'update', 'delete'], help="mode of operation : upload new items, update existing items' metadata or delete files")
 	parser.add_argument('--metadata', dest='metadata', type=lambda x: is_valid_file(x), help="the metada csv file : headers + 1 row/file")
 	parser.add_argument('--folder', dest='folder', type=lambda x: is_valid_folder(x), help="folder containing the files to be uploaded")
 	args = parser.parse_args()
