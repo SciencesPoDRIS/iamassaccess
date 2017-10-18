@@ -25,7 +25,7 @@ The metadata has to be a CSV file.
 
 Data are separated by commas `,`.
 
-If your data contains a comma `,`, it has to be surrounded by double quotes `"`.
+If your data contains a comma `,`, it has to be surrounded by double quotes `"`. If your data is multi-valuated, the whole values has to be surrounded by double quotes : `"first_part, second_part;value_02"`.
 
 The metadata keys are not case sensitive.
 The metadata keys should not contain space or accent.
