@@ -11,17 +11,17 @@ import argparse
 
 # Check if file argument is valid and returns it opened
 def is_valid_file(arg):
-    if not os.path.exists(arg):
-        logging.error("The file %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.exists(arg):
+		logging.error("The file %s does not exist" % arg)
+	else:
+		return arg
 
 # Check if folder argument is valid and returns its path
 def is_valid_folder(arg):
-    if not os.path.isdir(arg):
-        logging.error("The folder %s does not exist" % arg)
-    else:
-        return arg
+	if not os.path.isdir(arg):
+		logging.error("The folder %s does not exist" % arg)
+	else:
+		return arg
 
 # Logs folder structure problem/error and print out correct folder structure guidelines
 def print_folder_structure_problem():
@@ -30,13 +30,13 @@ def print_folder_structure_problem():
 	Folder of files to upload does not comply with following file structure
 	- folder
 	  - file_1
-	    - doc_to_upload
-	    - doc_to_upload
-	    - doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
 	  - file_2
-	    - doc_to_upload
-	    - doc_to_upload
-	    - doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
+		- doc_to_upload
 	  - metadata.csv
 	"""
 	sys.exit(0)
@@ -44,12 +44,12 @@ def print_folder_structure_problem():
 # Check metadata file and folder structure for correspondance (enough metadata for each file and vice-versa)
 def metadata_folder_consistency(metadata_dic, files_dic):
 	for file in files_dic:
-	 	if file not in metadata_dic.keys():
-	 		logging.error("Missing metadatas for file %s" % file)
-	 		sys.exit(0)
+		if file not in metadata_dic.keys():
+			logging.error("Missing metadatas for file %s" % file)
+			sys.exit(0)
 	for metadata in metadata_dic:
 		if metadata not in files_dic.keys():
-			logging.error("Metadata in the file metadata.csv isn't attributed to a file")
+			logging.error("Metadata " + metadata + " in the file metadata.csv isn't attributed to a file.")
 			sys.exit(0)
 
 # Walk a folder and returns the list of the names of the files it contains
@@ -99,7 +99,7 @@ def load_csv_metadata_file(metadata):
 			metadata_csv = csv.reader(metadata_file)
 			headers = metadata_csv.next()[1:] # list of attributes names minus file identifiers in the first columns
 			for line in metadata_csv:
-				filename = line[0].lower()
+				filename = line[0]
 				metadata_dict[filename] = dict()
 				attributes = line[1:]
 				for i in range(len(attributes)):
@@ -155,9 +155,10 @@ def updateItems(metadata_file):
 		for file in metadata:
 			item = internetarchive.get_item(file)
 			# Check if item already exists
+			# If item doesn't exist, log an error that advise to use CREATE mode
 			if not item.exists:
 				logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
-			# If item does not already exist, upload it
+			# If item does exist, modify the metadata
 			else:
 				logging.info(metadata[file])
 				response = item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
