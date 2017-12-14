@@ -159,8 +159,13 @@ def updateItems(metadata_file):
 				logging.error('Item "' + file + '" does not exist. Please use the "CREATE" mode to create it.')
 			# If item does not already exist, upload it
 			else:
-				item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
-				logging.info('Metadata modified for item : ' + str(item.identifier))
+				logging.info(metadata[file])
+				response = item.modify_metadata(metadata[file], access_key=conf['access_key'], secret_key=conf['secret_key'])
+				if response.status_code != '200' :
+					logging.error('Error while updating metadata of item ' + str(item.identifier))
+					logging.error(response.text)
+				else :
+					logging.info('Metadata modified for item : ' + str(item.identifier))
 	else:
 		logging.error('The file ' + metadata_file + ' does not exist.')
 
