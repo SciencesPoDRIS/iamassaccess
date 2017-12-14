@@ -139,8 +139,14 @@ def createItems(folder, headers):
 			else :
 				files_for_item = files[folder]
 				metadata_for_item = metadata[folder]
-				item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-				logging.info('Files uploaded for item : ' + folder)
+				responses = item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
+				logging.info(response)
+				for response in responses :
+					if response.status_code != '200' :
+						logging.error('Error while creating item ' + folder)
+						logging.error(response.text)
+					else :
+						logging.info('Files uploaded for item : ' + folder)
 	else:
 		logging.error('The folder ' + folder + ' does not exist.')
 
