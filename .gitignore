@@ -1,7 +1,8 @@
 #
 # Conf file
 #
-server/conf/conf.json
+server/conf/conf*.json
+!server/conf/conf.default.json
 
 #
 # Log folder
