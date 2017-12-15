@@ -49,7 +49,7 @@ def metadata_folder_consistency(metadata_dic, files_dic):
 			sys.exit(0)
 	for metadata in metadata_dic:
 		if metadata not in files_dic.keys():
-			logging.error("Metadata " + metadata + " in the file metadata.csv isn't attributed to a file.")
+			logging.error('Metadata ' + metadata + ' in the file metadata.csv isn\'t attributed to a file.')
 			sys.exit(0)
 
 # Walk a folder and returns the list of the names of the files it contains
