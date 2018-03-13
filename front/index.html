@@ -7,65 +7,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css" />
-    <style type="text/css">
-    /**
-        * Hide when Angular is not yet loaded and initialized
-        */
-    
-    [ng\:cloak],
-    [ng-cloak],
-    [data-ng-cloak],
-    [x-ng-cloak],
-    .ng-cloak,
-    .x-ng-cloak {
-        display: none !important;
-    }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 
-<body ng-app="iamassaccess">
-    <md-content style="background-color: #039be5; padding-left: 2em;" md-display-4>
-        <h1>Internet Archive Mass Access</h1>
-    </md-content>
-    <div ng-cloak ng-controller="MainControl">
-        <md-content>
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="create and update">
-                    <md-content class="md-padding">
-                        <h1 class="md-display-2">Create and update</h1>
-                        <p>Uploads new or existing files to Internet Archive and set their metadata</p>
-                        <md-content>
-                            <form name="form">
-                                <input type="file" ngf-select="" ng-model="file" name="file" ngf-accept="'.zip'" required="" class="ng-pristine ng-invalid ng-invalid-required" accept=".zip">
-                                <br />
-                                <button type="submit" ng-click="submit()">Upload</button>
-                            </form>
-                            <div><pre>{{message}}</pre></div>
-                        </md-content>
-                    </md-content>
-                </md-tab>
-                <md-tab label="delete">
-                    <md-content class="md-padding">
-                        <h1 class="md-display-2">Delete</h1>
-                        <p>Deletes all deletale files from existing items on Internet Archive</p>
-                    </md-content>
-                </md-tab>
-            </md-tabs>
-        </md-content>
+<body>
+    <h1>Internet Archive Mass Access</h1>
+    <h2>Upload and modify in mass for Internet Archive</h2>
+    <div class="credentials container">
+        <div class="column">
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-md-4">Access Key</label>
+                    <input type="text" name="AccessKey" value="" class="col-md-8">
+                </div>
+                <div class="row">
+                    <div>Secret Key <input type="text" name="SecretKey" value=""></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                LALILOU
+            </div>
+        </div>
     </div>
-    <!-- Project lib dependencies -->
-    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
-    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.min.js"></script>
-    <script type="text/javascript" src="node_modules/angular-material/angular-material.min.js"></script>
-    <script type="text/javascript" src="node_modules/angular-csv-import/dist/angular-csv-import.min.js"></script>
-    <script type="text/javascript" src="node_modules/ng-table/dist/ng-table.min.js"></script>
-    <script type="text/javascript" src="node_modules/ng-file-upload/dist/ng-file-upload-shim.min.js"></script>
-    <script type="text/javascript" src="node_modules/ng-file-upload/dist/ng-file-upload.min.js"></script>
-    <!-- Project angular js -->
-    <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript" src="directives.js"></script>
 </body>
 
 </html>
