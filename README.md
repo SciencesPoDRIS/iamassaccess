@@ -8,13 +8,9 @@ Upload and modify in mass for Internet Archive :
 ## Installation
 `> mkvirtualenv iamassaccess`
 
-`> pip install internetarchive`
+`> pip install -r requirements.txt`
 
-`> pip install Flask`
-
-`> pip install -U flask-cors`
-
-- Rename the file conf/conf.default.json into conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
+- Rename the file server/conf/conf.default.json into server/conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
 
