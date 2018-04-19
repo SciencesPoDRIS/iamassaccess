@@ -140,8 +140,8 @@ def createItems(folder, headers):
 				files_for_item = files[folder]
 				metadata_for_item = metadata[folder]
 				responses = item.upload(files_for_item, metadata=metadata_for_item, headers=headers, access_key=conf['access_key'], secret_key=conf['secret_key'])
-				logging.info(response)
 				for response in responses :
+					logging.info(response)
 					if response.status_code != '200' :
 						logging.error('Error while creating item ' + folder)
 						logging.error(response.text)
