@@ -43,8 +43,8 @@ http://archive.org/account/s3.php
 <img src="images/iamassaccess_schema.png" width="350" title="Folder structure schema">
 
 1. The folder pointed by FOLDER arg [in your command line](#execution). The folder's name can be whatever you want.
-2. One subfolder by item that you want to upload. The subfolder's name has to be the unique [archive.org](archive.org) identifier [see below](#trivia). You can have as many subfolder as you want.
-3. The files belonging to your item. You can have as many files as you want for this specific item. Formats accepted by [archive.org](archive.org) are jpg, jpeg, jpeg2000, pdf. The file's name can be whatever you want.
+2. One subfolder by item that you want to upload. The subfolder's name has to be the unique [archive.org](https://archive.org/) identifier [see below](#trivia). You can have as many subfolder as you want.
+3. The files belonging to your item. You can have as many files as you want for this specific item. Formats accepted by [archive.org](https://archive.org/) are jpg, jpeg, jpeg2000, pdf. The file's name can be whatever you want.
 4. Example with a PDF file.
 5. Same
 6. This is the file containing all the metadata. The file's name has to be *metadata.csv*. Please [see below](#write-your-metadata-file) how to write it.
