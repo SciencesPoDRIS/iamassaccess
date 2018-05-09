@@ -6,12 +6,32 @@ Upload and modify in mass for Internet Archive :
 - Add or modify metadata to existing items.
 
 ## Installation
-`> mkvirtualenv iamassaccess`
+- `> git clone https://github.com/SciencesPoDRIS/iamassaccess.git`
 
-`> pip install -r requirements.txt`
+- `> cd iamassaccess`
 
-- Rename the file server/conf/conf.default.json into server/conf/conf.json and edit it to put your own access key which you get, once connected to Archive.org with your login from : 
+- `> mkvirtualenv iamassaccess`
+
+- `> pip install -r requirements.txt`
+
+- `> cp server/conf/conf.default.json server/conf/conf.json`
+
+- Edit server/conf/conf.json to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
+
+## Execution
+`> python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]`
+
+- where MODE can be either 'create' or 'update'.
+
+- where METADATA is the path to the metadata file
+
+- where FOLDER is the path to the folder containing the items
+
+- /!\ Caution /!\ : if you use MODE 'update', you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
+
+### Execution example
+`> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
 
 
 ## Usage
@@ -40,15 +60,6 @@ For the "subject" metadata key, multiple values have to be separated by a semico
 For the "date" metadata, the values have to be formatted as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
 
 To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
-
-
-### Execute python script
-`> python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]`
-
-MODE can be either 'create' or 'update'.
-
-`> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
-
 
 ### Launch server
 `> python server/server.py`
