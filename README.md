@@ -52,29 +52,31 @@ http://archive.org/account/s3.php
 ### Write your metadata file
 
 
-The metadata has to be a CSV file.
+- The metadata has to be a CSV file.
 
-Data are separated by commas `,`.
+- Data are separated by commas `,`.
 
-If your data contains a comma `,`, it has to be surrounded by double quotes `"`. If your data is multi-valuated, the whole values has to be surrounded by double quotes : `"first_part, second_part;value_02"`.
+- If your data contains a comma `,`, it has to be surrounded by double quotes `"`. If your data is multi-valuated, the whole values has to be surrounded by double quotes : `"first_part, second_part;value_02"`.
 
-The metadata keys are not case sensitive.
-The metadata keys should not contain space or accent.
+- The metadata keys are not case sensitive.
 
-The metadata values are case sensitive.
+- The metadata keys should not contain space or accent.
 
-The first line has to be the list of the metadata keys / names (called headers).
+- The metadata values are case sensitive.
 
-The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!! Archive identifiers are case sensitive.
+- The first line has to be the list of the metadata keys / names (called headers).
 
-Warning, if several lines in the metadata file have the same identifier, only the last line will be taken into consideration.
+- The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!! Archive identifiers are case sensitive.
+
+- Warning, if several lines in the metadata file have the same identifier, only the last line will be taken into consideration.
 [Important : About identifiers](http://internetarchive.readthedocs.io/en/latest/metadata.html#archive-org-identifiers)
 
-For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
+- For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
 
-For the "date" metadata, the values have to be formatted as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
+- For the "date" metadata, the values have to be formatted as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
 
-To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
+- To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
+
 
 ### Launch server
 `> python server/server.py`
