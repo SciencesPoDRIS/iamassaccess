@@ -28,7 +28,7 @@ http://archive.org/account/s3.php
 
 - where "FOLDER" is the path to the folder containing the items
 
-- /!\ Caution /!\ : if you use MODE *update*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
+- :exclamation: Caution :exclamation: : if you use MODE *update*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
 
 ### Execution example
 `> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
@@ -36,7 +36,13 @@ http://archive.org/account/s3.php
 
 ## Usage
 
+### Build your folder
+
+![Schema](blob/master/images/iamassaccess_schema.png)
+
 ### Write your metadata file
+
+
 The metadata has to be a CSV file.
 
 Data are separated by commas `,`.
