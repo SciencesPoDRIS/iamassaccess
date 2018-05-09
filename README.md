@@ -38,7 +38,7 @@ http://archive.org/account/s3.php
 
 ### Build your folder
 
-![Schema](blob/master/images/iamassaccess_schema.png)
+![Schema](images/iamassaccess_schema.png)
 
 ### Write your metadata file
 
