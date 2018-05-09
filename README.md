@@ -28,10 +28,12 @@ http://archive.org/account/s3.php
 
 - where "FOLDER" is the path to the folder containing the items. Please [see below](#write-your-metadata-file) how to build it.
 
-- :exclamation: Caution :exclamation: : if you use MODE *update*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
+- :exclamation: Caution :exclamation: : if you use MODE *create*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
 
 ### Execution example
-`> python iamassaccess_cli.py update --folder test`
+- `> python iamassaccess_cli.py create --folder path/to/test/folder`
+
+- `> python iamassaccess_cli.py update --metadata path/to/metadata/file.csv`
 
 
 ## Usage
