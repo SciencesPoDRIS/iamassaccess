@@ -24,9 +24,9 @@ http://archive.org/account/s3.php
 
 - where "MODE" can be either *create* or *update*.
 
-- where "METADATA" is the path to the metadata file
+- where "METADATA" is the path to the metadata file. Please [see below](#build-your-folder) how to write it.
 
-- where "FOLDER" is the path to the folder containing the items
+- where "FOLDER" is the path to the folder containing the items. Please [see below](#write-your-metadata-file) how to build it.
 
 - :exclamation: Caution :exclamation: : if you use MODE *update*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
 
@@ -45,7 +45,7 @@ http://archive.org/account/s3.php
 3. The files belonging to your item. You can have as many files as you want for this specific item. Formats accepted by archive.org are jpg, jpeg, jpeg2000, pdf. The file's name can be whatever you want.
 4. Example with a PDF file.
 5. Same
-6. This is the file containing all the metadata. The file's name has to be *metadata.csv*. Please see below how to write it.
+6. This is the file containing all the metadata. The file's name has to be metadata.csv*. Please [see below](#write-your-metadata-file) how to write it.
 
 ### Write your metadata file
 
