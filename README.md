@@ -18,16 +18,12 @@ http://archive.org/account/s3.php
 `> python iamassaccess_cli.py MODE [--metadata METADATA] [--folder FOLDER]`
 
 - where "MODE" can be either *create* or *update*.
-
 - where "METADATA" is the path to the metadata file. Please [see below](#build-your-folder) how to write it.
-
 - where "FOLDER" is the path to the folder containing the items. Please [see below](#write-your-metadata-file) how to build it.
-
 - :exclamation: Caution :exclamation: : if you use MODE *create*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
 
 ### Execution example
 - `> python iamassaccess_cli.py create --folder path/to/test/folder`
-
 - `> python iamassaccess_cli.py update --metadata path/to/metadata/file.csv`
 
 
@@ -48,28 +44,17 @@ http://archive.org/account/s3.php
 
 
 - The metadata has to be a CSV file.
-
 - The first line has to be the list of the metadata keys / names (called headers).
-
 - Data are separated by commas `,`.
-
 - If your data contains a comma `,`, it has to be surrounded by double quotes `"`. If your data is multi-valuated, the whole values has to be surrounded by double quotes : `"first_part, second_part;value_02"`.
-
 - The metadata keys are not case sensitive.
-
 - The metadata keys should not contain space or accent.
-
 - The metadata values are case sensitive.
-
 - The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!! Archive identifiers are case sensitive.
-
 - Warning, if several lines in the metadata file have the same identifier, only the last line will be taken into consideration.
 [Important : About identifiers](http://internetarchive.readthedocs.io/en/latest/metadata.html#archive-org-identifiers)
-
 - For the "subject" metadata key, multiple values have to be separated by a semicolon `;`.
-
 - For the "date" metadata, the values have to be formatted as `YYYY`, `YYYY-MM` or `YYYY-MM-DD`.
-
 - To send a specific item into a collection, just add the column "collection" to your metadata file and specific the collection name.
 
 
