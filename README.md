@@ -7,15 +7,10 @@ Upload and modify in mass for Internet Archive :
 
 ## Installation
 - `> git clone https://github.com/SciencesPoDRIS/iamassaccess.git`
-
 - `> cd iamassaccess`
-
 - `> mkvirtualenv iamassaccess`
-
 - `> pip install -r requirements.txt`
-
 - `> cp server/conf/conf.default.json server/conf/conf.json`
-
 - Edit server/conf/conf.json to put your own access key which you get, once connected to Archive.org with your login from : 
 http://archive.org/account/s3.php
 
@@ -54,6 +49,8 @@ http://archive.org/account/s3.php
 
 - The metadata has to be a CSV file.
 
+- The first line has to be the list of the metadata keys / names (called headers).
+
 - Data are separated by commas `,`.
 
 - If your data contains a comma `,`, it has to be surrounded by double quotes `"`. If your data is multi-valuated, the whole values has to be surrounded by double quotes : `"first_part, second_part;value_02"`.
@@ -63,8 +60,6 @@ http://archive.org/account/s3.php
 - The metadata keys should not contain space or accent.
 
 - The metadata values are case sensitive.
-
-- The first line has to be the list of the metadata keys / names (called headers).
 
 - The first column has to be the identifiers of the Internet Archive items. This identifier has to be UNIQUE on whole Internet Archive (strange but real) !!! Archive identifiers are case sensitive.
 
