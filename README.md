@@ -31,7 +31,7 @@ http://archive.org/account/s3.php
 - :exclamation: Caution :exclamation: : if you use MODE *update*, you don't have to use METADATA. The script will look for a file `metadata.csv` into your folder.
 
 ### Execution example
-`> python iamassaccess_cli.py update --metadata test/metadata.csv --folder test`
+`> python iamassaccess_cli.py update --folder test`
 
 
 ## Usage
