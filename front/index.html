@@ -16,17 +16,40 @@
     <div class="credentials container">
         <div class="column">
             <div class="col-md-6">
-                <div class="row">
-                    <label class="col-md-4">Access Key</label>
-                    <input type="text" name="AccessKey" value="" class="col-md-8">
+                <div class="row first">
+                    <div class="row subtitle">
+                        1. Credentials
+                    </div>
+                    <div class="row accesskey">
+                        <label class="col-md-4">Access Key</label>
+                        <input type="text" name="AccessKey" value="" class="col-md-8">
+                    </div>
+                    <div class="row secretkey">
+                        <label class="col-md-4">Secret Key</label>
+                        <input type="text" name="SecretKey" value="" class="col-md-8">
+                    </div>
+                    <div class="row description">
+                        To get more info about it, please connect you on <a href="http://archive.org/account/s3.php" target="_blank">http://archive.org/account/s3.php</a> with your usual credentials.
+                    </div>
                 </div>
-                <div class="row">
-                    <div>Secret Key <input type="text" name="SecretKey" value=""></div>
+                <div class="row second">
+                    <div class="row subtitle">
+                        2. Data / Files
+                    </div>
+                    <div class="column action">
+                        <div class="col-md-6">
+                            <input type="radio" name="action" value="create"> Create
+                        </div>
+                        <div class="col-md-6">
+                            <input type="radio" name="action" value="update"> Update
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                LALILOU
-            </div>
+            <div class="col-md-6"></div>
         </div>
     </div>
 </body>
