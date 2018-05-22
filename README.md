@@ -70,13 +70,16 @@ Then the url of the server will be <http://localhost:5000/> (Flask default one).
 
 Then the url of the site will be <http://localhost:8000>.
 
-## Links
-<https://blog.archive.org/2013/07/04/metadata-api/>
+## Useful links
 <http://internetarchive.readthedocs.io/en/latest/>
+
+<https://blog.archive.org/2013/07/04/metadata-api/>
+
 
 ## Trivia
 - Archive identifier has to be UNIQUE on whole Internet Archive (strange but real) !!!
 - Archive identifiers are case sensitive.
 - You can't name your Archive identifier 'idX' where 'X' is in an integer.
-- It seems that you can't name your Archive items identifier like 'aa' or 'bb' or even anything shorter than 4 letters string.
 - On InternetArchive, if you create at least 50 item you can have a collection for them. Just contact us then and we'll create it for you. Please send your request to info at archive dot org [API](http://internetarchive.readthedocs.io/en/latest/metadata.html#collection)
+- An identifier is composed of any unique combination of alphanumeric characters, underscore (_) and dash (-).
+- While there are no official limits it is strongly suggested that identifiers be between 5 and 80 characters in length.
