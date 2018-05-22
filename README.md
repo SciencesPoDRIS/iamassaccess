@@ -83,3 +83,4 @@ Then the url of the site will be <http://localhost:8000>.
 - On InternetArchive, if you create at least 50 item you can have a collection for them. Just contact us then and we'll create it for you. Please send your request to info at archive dot org [API](http://internetarchive.readthedocs.io/en/latest/metadata.html#collection)
 - An identifier is composed of any unique combination of alphanumeric characters, underscore (_) and dash (-).
 - While there are no official limits it is strongly suggested that identifiers be between 5 and 80 characters in length.
+- It seems that in a "create" mode, the metadata are not correctly sent. Only an update is reliable. So please first send the pictures in a "create" mode, then send the metadata in an "update" mode.
